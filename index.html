@@ -6,10 +6,6 @@
     <title>PDF Viewer</title>
 
     <style>
-        html {
-            background:#ffffff; /* prevents white flash */
-        }
-
         body {
             margin: 0;
             background: #ffffff;
@@ -19,7 +15,6 @@
             flex-direction: column;
             height: 100vh;
             font-family: Arial, sans-serif;
-            overflow:hidden;
         }
 
         #title {
@@ -29,6 +24,8 @@
             letter-spacing: 3px;
             color: #5160ff;
         }
+
+
 
         #loader {
             display: flex;
@@ -69,11 +66,11 @@
             }
         }
 
-        embed {
-            display:none;
-            width:100vw;
-            height:100vh;
-            border:none;
+        iframe {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            border: none;
         }
     </style>
 </head>
@@ -88,19 +85,20 @@
         <div class="dot"></div>
     </div>
 
-    <embed id="pdfViewer" type="application/pdf" src="ega.pdf" />
+    <iframe id="pdfViewer" src="ega.pdf"></iframe>
 
     <script>
-        const embed = document.getElementById("pdfViewer");
+        const iframe = document.getElementById("pdfViewer");
         const loader = document.getElementById("loader");
         const title = document.getElementById("title");
 
-        embed.onload = () => {
+        iframe.onload = () => {
             loader.style.display = "none";
             title.style.display = "none";
-            embed.style.display = "block";
-        }
+            iframe.style.display = "block";
+        };
     </script>
 
 </body>
+
 </html>
