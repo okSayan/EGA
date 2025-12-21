@@ -1,70 +1,104 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8" />
-<title>PDF Viewer</title>
+    <meta charset="UTF-8" />
+    <title>PDF Viewer</title>
 
-<style>
-    body {
-        margin: 0;
-        background: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+    <style>
+        body {
+            margin: 0;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
 
-    #loader {
-        display: flex;
-        gap: 8px;
-    }
-    .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #333;
-        animation: bounce 0.6s infinite alternate;
-    }
-    .dot:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-    .dot:nth-child(3) {
-        animation-delay: 0.4s;
-    }
+        #title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            color: #5160ff;
+        }
 
-    @keyframes bounce {
-        from { transform: translateY(0); }
-        to { transform: translateY(-15px); }
-    }
 
-    iframe {
-        display: none; /* hide until loaded */
-        width: 100vw;
-        height: 100vh;
-        border: none;
-    }
-</style>
+
+        #loader {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #5160ff;
+            border-radius: 50%;
+            animation: bounce 0.6s infinite ease-in-out;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.30s;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            50% {
+                transform: translateY(-6px);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        iframe {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+    </style>
 </head>
 
 <body>
 
-<div id="loader">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-</div>
+    <div id="title">Evolution Guidance Academy</div>
 
-<iframe id="pdfViewer" src="ega.pdf"></iframe>
+    <div id="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
 
-<script>
-    const iframe = document.getElementById("pdfViewer");
-    const loader = document.getElementById("loader");
+    <iframe id="pdfViewer" src="ega.pdf"></iframe>
 
-    iframe.onload = () => {
-        loader.style.display = "none";
-        iframe.style.display = "block";
-    };
-</script>
+    <script>
+        const iframe = document.getElementById("pdfViewer");
+        const loader = document.getElementById("loader");
+        const title = document.getElementById("title");
+
+        iframe.onload = () => {
+            loader.style.display = "none";
+            title.style.display = "none";
+            iframe.style.display = "block";
+        };
+    </script>
 
 </body>
+
 </html>
