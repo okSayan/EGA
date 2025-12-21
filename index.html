@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta http-equiv="refresh" content="1; url=https://drive.google.com/file/d/1ooaYTECrL_EhwwvzNJdcuvojABW65IIZ/view?usp=drive_link">
-<title>Opening…</title>
+<title>EGA</title>
 
 <style>
 body {
@@ -13,25 +13,44 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #f8f9ff;
+    background: #f5f6ff;
     font-family: "Segoe UI", sans-serif;
     color: #445;
 }
+
 .box {
     text-align: center;
-}
-.loader {
-    width: 38px;
-    height: 38px;
-    border: 4px solid #ddd;
-    border-top-color: #5568ff;
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-    margin: 0 auto 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* THIS FIXES center alignment */
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+.loader {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #5160ff;
+    border-radius: 50%;
+    animation: bounce 0.6s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.30s;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-6px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 1; }
 }
 </style>
 
@@ -39,7 +58,11 @@ body {
 <body>
 
 <div class="box">
-    <div class="loader"></div>
+    <div class="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
     <p>Evolution Guidance Academy</p>
 </div>
 
