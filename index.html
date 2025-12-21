@@ -1,9 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="refresh" content="0; url=https://drive.google.com/file/d/1ooaYTECrL_EhwwvzNJdcuvojABW65IIZ/view?usp=drive_link">
+<meta charset="UTF-8" />
+<meta http-equiv="refresh" content="1; url=https://drive.google.com/file/d/1ooaYTECrL_EhwwvzNJdcuvojABW65IIZ/view?usp=drive_link">
+<title>Opening…</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f8f9ff;
+    font-family: "Segoe UI", sans-serif;
+    color: #445;
+}
+.box {
+    text-align: center;
+}
+.loader {
+    width: 38px;
+    height: 38px;
+    border: 4px solid #ddd;
+    border-top-color: #5568ff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+
 </head>
 <body>
-Redirecting...
+
+<div class="box">
+    <div class="loader"></div>
+    <p>Evolution Guidance Academy</p>
+</div>
+
 </body>
 </html>
