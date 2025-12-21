@@ -85,30 +85,19 @@
         <div class="dot"></div>
     </div>
 
-    <iframe id="pdfViewer"></iframe>
+    <iframe id="pdfViewer" src="ega.pdf"></iframe>
 
-<script>
-    const loader = document.getElementById("loader");
-    const title = document.getElementById("title");
+    <script>
+        const iframe = document.getElementById("pdfViewer");
+        const loader = document.getElementById("loader");
+        const title = document.getElementById("title");
 
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.width = "100%";
-    iframe.height = "100%";
-    iframe.style.border = "none";
-
-    iframe.onload = () => {
-        loader.style.display = "none";
-        title.style.display = "none";
-        iframe.style.display = "block";
-    };
-
-    // delay iframe creation to allow animation to begin smoothly
-    setTimeout(() => {
-        iframe.src = "ega.pdf";        // your PDF here
-        document.body.appendChild(iframe);
-    }, 200); // tweak this delay if necessary
-</script>
+        iframe.onload = () => {
+            loader.style.display = "none";
+            title.style.display = "none";
+            iframe.style.display = "block";
+        };
+    </script>
 
 
 </body>
