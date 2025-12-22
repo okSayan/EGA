@@ -2,102 +2,76 @@
 <html>
 
 <head>
-    <meta charset="UTF-8" />
-    <title>PDF Viewer</title>
+    <meta charset="UTF-8">
+    <title>Evolution Guidance Academy</title>
 
     <style>
         body {
             margin: 0;
-            background: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
             font-family: Arial, sans-serif;
+            background: #fff;
         }
 
-        #title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-            color: #5160ff;
-        }
-
-
-
-        #loader {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
+        #topbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 40px;
             background: #5160ff;
-            border-radius: 50%;
-            animation: bounce 0.6s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            box-sizing: border-box;
+            color: white;
+            z-index: 10;
         }
 
-        .dot:nth-child(2) {
-            animation-delay: 0.15s;
+        #download {
+            background: white;
+            color: #5160ff;
+            padding: 4px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: auto;
         }
 
-        .dot:nth-child(3) {
-            animation-delay: 0.30s;
+        .title {
+            margin: 0 auto;
+            font-size: 18px;
         }
 
-        @keyframes bounce {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-
-            50% {
-                transform: translateY(-6px);
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        iframe {
-            display: none;
-            width: 100vw;
-            height: 100vh;
-            border: none;
+        .page-img {
+            width: 100%;
+            max-width: 900px;
+            display: block;
+            margin: 0 auto 30px auto;
         }
     </style>
+
 </head>
 
 <body>
 
-    <div id="title">Evolution Guidance Academy</div>
-
-    <div id="loader">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
+    <div id="topbar">
+        <a id="download" href="ega.pdf" download>Download PDF</a>
     </div>
+    <div style="display: block; margin-top: 45px;">
 
-    <iframe id="pdfViewer" src="ega.pdf"></iframe>
-
-    <script>
-        const iframe = document.getElementById("pdfViewer");
-        const loader = document.getElementById("loader");
-        const title = document.getElementById("title");
-
-        iframe.onload = () => {
-            loader.style.display = "none";
-            title.style.display = "none";
-            iframe.style.display = "block";
-        };
-    </script>
+        <img class="page-img" src="images/1.png">
+        <img class="page-img" src="images/2.jpeg">
+        <img class="page-img" src="images/3.jpeg">
+        <img class="page-img" src="images/4.jpeg">
+        <img class="page-img" src="images/5.png">
+        <img class="page-img" src="images/6.jpg">
+        <img class="page-img" src="images/7.png">
+        <img class="page-img" src="images/8.png">
+        <img class="page-img" src="images/9.png">
+        <img class="page-img" src="images/10.png">
+        <img class="page-img" src="images/11.png">
+        <img class="page-img" src="images/12.png">
+    </div>
 
 </body>
 
