@@ -37,16 +37,20 @@
             margin-right: auto;
         }
 
-        .title {
-            margin: 0 auto;
-            font-size: 18px;
-        }
-
         .page-img {
             width: 100%;
             max-width: 900px;
             display: block;
             margin: 0 auto 30px auto;
+
+            filter: blur(10px);
+            opacity: 0;
+            transition: opacity .4s ease, filter .4s ease;
+        }
+
+        .page-img.loaded {
+            opacity: 1;
+            filter: blur(0);
         }
 
         img {
@@ -58,6 +62,7 @@
             -webkit-user-select: none;
             -webkit-touch-callout: none;
         }
+
     </style>
 
 </head>
@@ -67,27 +72,57 @@
     <div id="topbar">
         <a id="download" href="ega.pdf" download>Download PDF</a>
     </div>
+
     <div style="display: block; margin-top: 45px;">
 
-        <img class="page-img" src="images/1.png">
-        <img class="page-img" src="images/2.jpeg">
-        <img class="page-img" src="images/3.jpeg">
-        <img class="page-img" src="images/4.jpeg">
-        <img class="page-img" src="images/5.png">
-        <img class="page-img" src="images/6.jpg">
-        <img class="page-img" src="images/7.png">
-        <img class="page-img" src="images/8.png">
-        <img class="page-img" src="images/9.png">
-        <img class="page-img" src="images/10.png">
-        <img class="page-img" src="images/11.png">
-        <img class="page-img" src="images/12.png">
+        <img class="page-img lazy" data-src="images/1.png">
+        <img class="page-img lazy" data-src="images/2.jpeg">
+        <img class="page-img lazy" data-src="images/3.jpeg">
+        <img class="page-img lazy" data-src="images/4.jpeg">
+        <img class="page-img lazy" data-src="images/5.png">
+        <img class="page-img lazy" data-src="images/6.jpg">
+        <img class="page-img lazy" data-src="images/7.png">
+        <img class="page-img lazy" data-src="images/8.png">
+        <img class="page-img lazy" data-src="images/9.png">
+        <img class="page-img lazy" data-src="images/10.png">
+        <img class="page-img lazy" data-src="images/11.png">
+        <img class="page-img lazy" data-src="images/12.png">
+
     </div>
 
 
     <script>
-     document.addEventListener("contextmenu",       event => event.preventDefault());
+
+        document.addEventListener("contextmenu", event => event.preventDefault());
+
+        const images = document.querySelectorAll(".lazy");
+
+        const observer = new IntersectionObserver(entries => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    const img = entry.target;
+                    const src = img.dataset.src;
+
+                    img.src = src;
+
+                    img.onload = () => {
+                        img.classList.add("loaded");
+                    };
+
+                    observer.unobserve(img);
+
+                }
+
+            });
+
+        }, { threshold: 0.1 });
+
+        images.forEach(img => observer.observe(img));
+
     </script>
 
 </body>
-
 </html>
