@@ -48,6 +48,16 @@
             display: block;
             margin: 0 auto 30px auto;
         }
+
+        img {
+            pointer-events: none;
+        }
+
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
     </style>
 
 </head>
@@ -72,6 +82,11 @@
         <img class="page-img" src="images/11.png">
         <img class="page-img" src="images/12.png">
     </div>
+
+
+    <script>
+     document.addEventListener("contextmenu",       event => event.preventDefault());
+    </script>
 
 </body>
 
