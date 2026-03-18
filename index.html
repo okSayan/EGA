@@ -4,15 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Evolution Guidance Academy</title>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7N0QQG60R4"></script>
-    <script>
-     window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
-
-     gtag('config', 'G-7N0QQG60R4');
-    </script>
-
     <style>
         body {
             margin: 0;
@@ -70,18 +61,12 @@
             -webkit-user-select: none;
             -webkit-touch-callout: none;
         }
-
     </style>
 
 </head>
 
 <body>
-
-   <!-- <div id="topbar">
-        <a id="download" href="ega.pdf" download>Download PDF</a>
-    </div> -->
-
-    <div style="display: block; margin-top: 45px;">
+    <div style="display: block;">
 
         <img class="page-img lazy" data-src="files/cLh.webp">
         <img class="page-img lazy" data-src="files/NKR.webp">
@@ -137,6 +122,28 @@
 
     </script>
 
-    <script src="https://cdn.counter.dev/script.js" data-id="65907582-c48c-4edb-867e-8134a7c446e5" data-utcoffset="6"></script>
+    <script src="https://cdn.counter.dev/script.js" data-id="65907582-c48c-4edb-867e-8134a7c446e5"
+        data-utcoffset="6"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7N0QQG60R4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-7N0QQG60R4');
+    </script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const source = params.get("ok") || params.get("src");
+
+        if (source) {
+            console.log("QR scanned from:", source);
+            gtag('event', 'qr_scan', {
+                qr_location: source
+            });
+        }
+    </script>
 </body>
+
 </html>
