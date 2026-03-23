@@ -5,7 +5,6 @@ let visitorId = null;
 const SECRET = 'okWErijfiger83582900=%AAA';
 const pageLoadTime = Date.now();
 
-// --- Auto data collection ---
 function getDeviceType() {
   const ua = navigator.userAgent;
   if (/tablet|ipad|playbook|silk/i.test(ua)) return 'Tablet';
