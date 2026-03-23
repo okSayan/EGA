@@ -3,69 +3,50 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evolution Guidance Academy</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #fff;
-        }
-
-        #topbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 40px;
-            background: #5160ff;
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            box-sizing: border-box;
-            color: white;
-            z-index: 10;
-        }
-
-        #download {
-            background: white;
-            color: #5160ff;
-            padding: 4px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            margin-right: auto;
-        }
-
-        .page-img {
-            width: 100%;
-            max-width: 900px;
-            display: block;
-            margin: 0 auto 30px auto;
-
-            filter: blur(10px);
-            opacity: 0;
-            transition: opacity .4s ease, filter .4s ease;
-        }
-
-        .page-img.loaded {
-            opacity: 1;
-            filter: blur(0);
-        }
-
-        img {
-            pointer-events: none;
-        }
-
-        * {
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-    </style>
-
+    <link href="styles.css" rel="stylesheet">
+    <link rel="preconnect" href="https://challenges.cloudflare.com">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
+    <!-- Survey Card -->
+    <div id="survey-card">
+        <button id="survey-close">✕</button>
+
+        <!-- Stage 1: Interest Question -->
+        <div id="stage-1">
+            <!-- <h3>👋 Hey there!</h3> -->
+            <h3>Interested in our courses?</h3>
+            <div id="stage-1-buttons">
+                <button class="choice-btn yes-btn" onclick="handleInterest('yes')">Yes!</button>
+                <button class="choice-btn no-btn" onclick="handleInterest('no')">No.</button>
+                <button class="choice-btn may-btn" onclick="handleInterest('maybe')">Will Think...</button>
+            </div>
+        </div>
+
+        <!-- Stage 2: Details Form (only if Yes) -->
+        <div id="stage-2" class="hidden">
+            <h3>Great! Tell us about Yourself</h3>
+            <input type="text" id="s-name" placeholder="Your Name" />
+            <input type="text" id="i-name" placeholder="Your School/College name" />
+            <input type="text" id="c-name" placeholder="Interested Course/Subject" />
+            <input type="tel" id="s-phone" placeholder="Phone Number" />
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAACuyOXqycnJ5LVcZ"></div>
+            <button id="survey-submit">Get Callback →</button>
+        </div>
+
+        <!-- Stage 3: Thank You Message -->
+        <div id="stage-3" class="hidden">
+            <div id="thankyou-content"></div>
+        </div>
+
+    </div>
+
+    <div id="survey-tab">Enquire</div>
+
+
     <div style="display: block;">
 
         <img class="page-img lazy" data-src="files/cLh.webp">
@@ -145,8 +126,8 @@
             });
         }
     </script>
-    <script>
-        window.onload = function() {
+    <!-- <script>
+        window.onload = function () {
             const params = new URLSearchParams(window.location.search);
             const source = params.get("ok");
 
@@ -156,7 +137,8 @@
                     .catch(err => console.error(err));
             }
         };
-    </script>
+    </script> -->
+    <script src="script.js"></script>
 </body>
 
 </html>
