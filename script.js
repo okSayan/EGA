@@ -2,7 +2,7 @@ const card = document.getElementById('survey-card');
 const tab = document.getElementById('survey-tab');
 let shown = false;
 let visitorId = null;
-const SECRET = 'okWErijfiger83582900=%AAA'; // ← make sure worker matches this exactly
+const SECRET = 'okWErijfiger83582900=%AAA';
 const pageLoadTime = Date.now();
 
 // --- Auto data collection ---
@@ -27,20 +27,19 @@ function getLocalTimestamp() {
     String(now.getSeconds()).padStart(2, '0');
 }
 
-// --- Log visitor on page load ---
 async function logVisit() {
   try {
     const res = await fetch('https://ega2.bharatyudhishthir-509.workers.dev/visit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Secret-Token': SECRET  // ← added
+        'X-Secret-Token': SECRET 
       },
       body: JSON.stringify({
         query: window.location.search || 'Direct',
         device_type: getDeviceType(),
         resolution: `${window.screen.width}x${window.screen.height}`,
-        timestamp: getLocalTimestamp()  // ← added
+        timestamp: getLocalTimestamp()  
       })
     });
     const data = await res.json();
@@ -52,7 +51,6 @@ async function logVisit() {
 
 logVisit();
 
-// --- Show card: 40% scroll OR 4 seconds ---
 if (sessionStorage.getItem('survey-dismissed')) { shown = true; }
 
 function showCard() {
@@ -68,7 +66,6 @@ window.addEventListener('scroll', () => {
 
 setTimeout(showCard, 4000);
 
-// --- Switch stages ---
 function goToStage(hideId, showId) {
   document.getElementById(hideId).classList.add('hidden');
   const next = document.getElementById(showId);
@@ -76,7 +73,6 @@ function goToStage(hideId, showId) {
   next.classList.add('stage-enter');
 }
 
-// --- Stage 1: Interest buttons ---
 async function handleInterest(choice) {
   if (choice === 'yes') {
     goToStage('stage-1', 'stage-2');
@@ -85,7 +81,7 @@ async function handleInterest(choice) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Secret-Token': SECRET  // ← added
+        'X-Secret-Token': SECRET 
       },
       body: JSON.stringify({
         visitor_id: visitorId,
@@ -99,7 +95,7 @@ async function handleInterest(choice) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Secret-Token': SECRET  // ← added
+        'X-Secret-Token': SECRET 
       },
       body: JSON.stringify({
         visitor_id: visitorId,
@@ -111,7 +107,6 @@ async function handleInterest(choice) {
   }
 }
 
-// --- Stage 3: Thank you ---
 function showThankYou(emoji, heading, message) {
   document.getElementById('thankyou-content').innerHTML = `
     <div style="font-size:36px; margin-bottom:8px;">${emoji}</div>
@@ -131,7 +126,6 @@ function showThankYou(emoji, heading, message) {
   }, 3000);
 }
 
-// --- Attach listeners ---
 function attachListeners() {
   document.getElementById('survey-close').addEventListener('click', () => {
     card.classList.remove('show');
@@ -183,7 +177,6 @@ function attachListeners() {
   });
 }
 
-// --- Reset card ---
 function resetCard() {
   card.innerHTML = `
     <button id="survey-close">✕</button>
@@ -210,7 +203,6 @@ function resetCard() {
   `;
   attachListeners();
 
-  // Re-render Turnstile widget after resetCard
   if (window.turnstile) {
     turnstile.render('.cf-turnstile', {
       sitekey: '0x4AAAAAACuyOXqycnJ5LVcZ'
@@ -218,12 +210,10 @@ function resetCard() {
   }
 }
 
-// --- Enquire tab ---
 tab.addEventListener('click', () => {
   resetCard();
   card.classList.add('show');
   tab.style.display = 'none';
 });
 
-// --- Initial attach ---
 attachListeners();
