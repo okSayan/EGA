@@ -55,9 +55,6 @@ img {
     -webkit-touch-callout: none;
 }
 
-
-
-
 #survey-card {
     position: fixed;
     bottom: 30px;
@@ -91,7 +88,6 @@ img {
     color: #666;
 }
 
-/* Stage transition */
 .hidden { display: none; }
 
 .stage-enter {
@@ -103,7 +99,6 @@ img {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Choice Buttons (Stage 1) */
 #stage-1-buttons {
     display: flex;
     gap: 8px;
@@ -140,7 +135,6 @@ img {
     color: #f59e0b;
 }
 
-/* Form Inputs (Stage 2) */
 #stage-2 input,
 #stage-2 select {
     width: 100%;
@@ -169,7 +163,6 @@ img {
     background: #47a1f5;
 }
 
-/* Close Button */
 #survey-close {
     position: absolute;
     top: 12px;
@@ -181,7 +174,6 @@ img {
     color: #cc0404c0;
 }
 
-/* Thank You */
 #thankyou-content {
     text-align: center;
     padding: 10px 0;
@@ -202,7 +194,6 @@ img {
     cursor: pointer;
     z-index: 9998;
     display: none;
-    /* hidden by default */
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
     transition: all 0.2s;
 }
