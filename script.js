@@ -194,6 +194,17 @@ function attachListeners() {
         });
     });
 
+      ['s-name', 'i-name', 'c-name', 's-phone'].forEach(id => {
+        document.getElementById(id).addEventListener('focus', () => {
+            setTimeout(() => {
+                document.getElementById(id).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 300);
+        });
+    });
+  
     setupEnterKey();
 
 }
