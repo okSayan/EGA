@@ -174,6 +174,44 @@ function attachListeners() {
       alert('Something went wrong, please try again!');
     }
   });
+
+    document.getElementById('s-name').addEventListener('focus', () => {
+        document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('s-phone').addEventListener('focus', () => {
+        document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('i-name').addEventListener('focus', () => {
+        document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('c-name').addEventListener('focus', () => {
+        document.body.style.overflow = 'hidden';
+    });
+
+    ['s-name', 's-phone', 'i-name', 'c-name'].forEach(id => {
+        document.getElementById(id).addEventListener('blur', () => {
+            document.body.style.overflow = '';
+        });
+    });
+
+    setupEnterKey();
+
+}
+
+function setupEnterKey() {
+    const fields = ['s-name', 'i-name', 'c-name', 's-phone'];
+    fields.forEach((id, index) => {
+        document.getElementById(id).addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (index < fields.length - 1) {
+                    document.getElementById(fields[index + 1]).focus();
+                } else {
+                    document.getElementById('survey-submit').click();
+                }
+            }
+        });
+    });
 }
 
 function resetCard() {
