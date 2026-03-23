@@ -56,25 +56,26 @@ img {
 }
 
 #survey-card {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 300px;
-    background: #a5dbfa;
-    color: #250747;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    padding: 24px;
-    z-index: 9999;
-    font-family: sans-serif;
-    transform: translateY(120%);
-    opacity: 0;
-    transition: all 0.4s ease;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  width: calc(100% - 40px);
+  max-width: 360px;
+  background: #a5dbfa;
+  color: #250747;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  z-index: 9999;
+  font-family: sans-serif;
+  opacity: 0;
+  transition: all 0.4s ease;
 }
 
 #survey-card.show {
-    transform: translateY(0);
-    opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }
 
 #survey-card h3 {
