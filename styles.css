@@ -71,6 +71,7 @@ img {
   font-family: sans-serif;
   opacity: 0;
   transition: all 0.4s ease;
+  box-sizing: border-box;
 }
 
 #survey-card.show {
