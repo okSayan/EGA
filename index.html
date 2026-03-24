@@ -108,10 +108,8 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const source = params.get("ok") || params.get("ok");
-        console.log("source:", source);
 
         if (source) {
-            console.log("QR scanned from:", source);
             gtag('event', 'qr_scan', {
                 qr_location: source
             });
