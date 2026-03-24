@@ -63,7 +63,7 @@ window.addEventListener('scroll', () => {
   if (scrolled > 0.4) showCard();
 });
 
-setTimeout(showCard, 4000);
+setTimeout(showCard, 6000);
 
 function goToStage(hideId, showId) {
   document.getElementById(hideId).classList.add('hidden');
