@@ -140,7 +140,7 @@ function attachListeners() {
     const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
 
     if (!name || !phone) {
-      alert('Please fill all fields!');
+      alert('Please fill in your Name & Phone!');
       return;
     }
 
