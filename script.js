@@ -240,7 +240,7 @@ function resetCard() {
       <h3>Great! Tell us about Yourself</h3>
       <input type="text" id="s-name" placeholder="Your Name" />
       <input type="text" id="i-name" placeholder="Your School/College name" />
-      <input type="text" id="c-name" placeholder="Interested Course/Subject" />
+      <input type="text" id="c-name" placeholder="Interested Subject/Course" />
       <input type="tel"  id="s-phone" placeholder="Phone Number" />
       <div class="cf-turnstile" data-sitekey="0x4AAAAAACuyO4itcnJ5LVcZ"></div>
       <button id="survey-submit">Get Callback →</button>
