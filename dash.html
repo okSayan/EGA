@@ -511,17 +511,23 @@
 
       try {
         const text = await file.text();
+        console.log('Read source map file:', text);
 
         const map = {};
         text.split('\n').forEach(line => {
           line = line.trim();
+          console.log('Processing line:', JSON.stringify(line));
           if (!line) return;
-          const firstDash = line.indexOf('-');
+          const firstDash = line.indexOf(' - ');
+          console.log('First dash index:', firstDash);
           if (firstDash === -1) return;
           const key = '?ok=' + line.substring(0, firstDash).trim();
           const value = line.substring(firstDash + 3).trim();
+          console.log('Parsed key:', key, 'value:', value);
           if (key && value) map[key] = value;
         });
+
+        console.log('Parsed source map:', map);
 
         const res = await fetch(
           `${WORKER}/sourcemap/sync?key=${encodeURIComponent(adminKey)}`,
@@ -533,6 +539,7 @@
         );
 
         const data = await res.json();
+        console.log('Sync response:', data);
 
         if (data.success) {
           sourceMap = map;
