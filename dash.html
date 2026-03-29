@@ -123,7 +123,7 @@
 
     .chart-card canvas { max-height: 220px; }
 
-    /* Leads Table */
+    /* lTable */
     .table-card {
       background: white;
       border-radius: 12px;
@@ -199,8 +199,8 @@
 
   <!-- Login -->
   <div id="login-screen">
-    <h2>🎓 EGA Admin Dashboard</h2>
-    <p style="color:#888; font-size:13px;">Enter your admin password to continue</p>
+    <h2>EGA Admin Dashboard</h2>
+    <p style="color:#888; font-size:13px;">Enter your password to continue</p>
     <input type="password" id="admin-pass" placeholder="Admin Password" />
     <button onclick="doLogin()">Login →</button>
     <span id="login-error">Wrong password!</span>
@@ -212,7 +212,7 @@
     <div id="dash-content" style="display:none;">
 
       <div class="top-bar">
-        <h1>🎓 EGA Dashboard</h1>
+        <h1>EGA Dashboard</h1>
         <div style="display:flex; gap:8px;">
           <button onclick="downloadCSV('visitors')">⬇ Visitors CSV</button>
           <button onclick="downloadCSV('leads')">⬇ Leads CSV</button>
@@ -243,15 +243,15 @@
       <!-- Charts -->
       <div class="charts">
         <div class="chart-card">
-          <h3>📱 Device Types</h3>
+          <h3>Device Types</h3>
           <canvas id="chart-devices"></canvas>
         </div>
         <div class="chart-card">
-          <h3>💬 Visitor Interest</h3>
+          <h3>Visitor Interest</h3>
           <canvas id="chart-interest"></canvas>
         </div>
         <div class="chart-card">
-          <h3>📅 Leads Per Day</h3>
+          <h3>Leads Per Day</h3>
           <canvas id="chart-leads-day"></canvas>
         </div>
         <div class="chart-card">
@@ -262,7 +262,7 @@
 
       <!-- Leads Table -->
       <div class="table-card">
-        <h3>📋 All Leads</h3>
+        <h3>All Leads</h3>
         <div class="search-bar">
           <input type="text" id="search-input" placeholder="Search by name, phone, course..." oninput="filterTable()" />
         </div>
