@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EGA Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      color: #1a1a2e;
+    }
+
+    /* Login Screen */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 12px;
+    }
+
+    #login-screen h2 { font-size: 22px; margin-bottom: 8px; }
+
+    #login-screen input {
+      padding: 12px 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      width: 280px;
+    }
+
+    #login-screen button {
+      padding: 12px 24px;
+      background: #184e72;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      width: 280px;
+    }
+
+    #login-screen button:hover { background: #47a1f5; }
+    #login-error { color: red; font-size: 13px; display: none; }
+
+    /* Dashboard */
+    #dashboard { display: none; padding: 20px; }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .top-bar h1 { font-size: 22px; color: #184e72; }
+
+    .top-bar button {
+      padding: 8px 16px;
+      background: #184e72;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    /* Stat Cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .stat-card .number {
+      font-size: 36px;
+      font-weight: 700;
+      color: #184e72;
+    }
+
+    .stat-card .label {
+      font-size: 13px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* Charts */
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .chart-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .chart-card h3 {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .chart-card canvas { max-height: 220px; }
+
+    /* Leads Table */
+    .table-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      overflow-x: auto;
+    }
+
+    .table-card h3 {
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: #184e72;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f0f4f8;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f9fbff; }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-mobile { background: #dbeafe; color: #1d4ed8; }
+    .badge-desktop { background: #dcfce7; color: #16a34a; }
+    .badge-tablet { background: #fef9c3; color: #b45309; }
+
+    /* Search */
+    .search-bar {
+      margin-bottom: 14px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* Loading */
+    #loading {
+      text-align: center;
+      padding: 60px;
+      font-size: 15px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login -->
+  <div id="login-screen">
+    <h2>🎓 EGA Admin Dashboard</h2>
+    <p style="color:#888; font-size:13px;">Enter your admin password to continue</p>
+    <input type="password" id="admin-pass" placeholder="Admin Password" />
+    <button onclick="doLogin()">Login →</button>
+    <span id="login-error">Wrong password!</span>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <div id="loading">Loading dashboard...</div>
+    <div id="dash-content" style="display:none;">
+
+      <div class="top-bar">
+        <h1>🎓 EGA Dashboard</h1>
+        <div style="display:flex; gap:8px;">
+          <button onclick="downloadCSV('visitors')">⬇ Visitors CSV</button>
+          <button onclick="downloadCSV('leads')">⬇ Leads CSV</button>
+          <button onclick="doLogout()" style="background:#c0392b;">Logout</button>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats">
+        <div class="stat-card">
+          <div class="number" id="stat-visitors">-</div>
+          <div class="label">Total Visitors</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="stat-leads">-</div>
+          <div class="label">Total Leads</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="stat-conversion">-</div>
+          <div class="label">Conversion Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="stat-today">-</div>
+          <div class="label">Leads Today</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts">
+        <div class="chart-card">
+          <h3>📱 Device Types</h3>
+          <canvas id="chart-devices"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>💬 Visitor Interest</h3>
+          <canvas id="chart-interest"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>📅 Leads Per Day</h3>
+          <canvas id="chart-leads-day"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>🔗 Top Sources</h3>
+          <canvas id="chart-sources"></canvas>
+        </div>
+      </div>
+
+      <!-- Leads Table -->
+      <div class="table-card">
+        <h3>📋 All Leads</h3>
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Search by name, phone, course..." oninput="filterTable()" />
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Institution</th>
+              <th>Course</th>
+              <th>Phone</th>
+              <th>Source</th>
+              <th>Device</th>
+              <th>Time Spent</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="leads-table"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  const WORKER = 'https://ega2.bharatyudhishthir-509.workers.dev';
+  let adminKey = '';
+  let allLeads = [];
+
+  // --- Login ---
+  function doLogin() {
+    const pass = document.getElementById('admin-pass').value.trim();
+    if (!pass) return;
+    adminKey = pass;
+    loadDashboard();
+  }
+
+  document.getElementById('admin-pass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function doLogout() {
+    adminKey = '';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-pass').value = '';
+  }
+
+  // --- Load Dashboard ---
+  async function loadDashboard() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('dash-content').style.display = 'none';
+
+    try {
+      const res = await fetch(`${WORKER}/dashboard/data?key=${encodeURIComponent(adminKey)}`);
+
+      if (res.status === 401) {
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('login-error').style.display = 'block';
+        return;
+      }
+
+      const data = await res.json();
+      renderDashboard(data);
+
+    } catch {
+      document.getElementById('loading').textContent = 'Failed to load. Check your connection.';
+    }
+  }
+
+  // --- Render ---
+  function renderDashboard(data) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('dash-content').style.display = 'block';
+
+    // Stat cards
+    const visitors   = data.counts.total_visitors || 0;
+    const leads      = data.counts.total_leads || 0;
+    const conversion = visitors > 0 ? ((leads / visitors) * 100).toFixed(1) + '%' : '0%';
+    const today      = data.leadsPerDay[0]?.date === new Date().toISOString().split('T')[0]
+                       ? data.leadsPerDay[0].count : 0;
+
+    document.getElementById('stat-visitors').textContent   = visitors;
+    document.getElementById('stat-leads').textContent      = leads;
+    document.getElementById('stat-conversion').textContent = conversion;
+    document.getElementById('stat-today').textContent      = today;
+
+    // Charts
+    renderPie('chart-devices', data.devices, 'device_type',
+      ['#3b82f6','#10b981','#f59e0b','#ef4444']);
+
+    renderPie('chart-interest', data.interests, 'interest',
+      ['#10b981','#ef4444','#f59e0b','#6b7280']);
+
+    renderBar('chart-leads-day',
+      data.leadsPerDay.reverse().map(r => r.date),
+      data.leadsPerDay.map(r => r.count),
+      'Leads', '#184e72');
+
+    renderBar('chart-sources',
+      data.sources.map(r => r.query.replace('?ref=', '')),
+      data.sources.map(r => r.count),
+      'Visits', '#47a1f5');
+
+    // Leads table
+    allLeads = data.leads;
+    renderTable(allLeads);
+  }
+
+  // --- Charts ---
+  function renderPie(id, data, labelKey, colors) {
+    new Chart(document.getElementById(id), {
+      type: 'pie',
+      data: {
+        labels: data.map(r => r[labelKey] || 'Unknown'),
+        datasets: [{ data: data.map(r => r.count), backgroundColor: colors }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        responsive: true
+      }
+    });
+  }
+
+  function renderBar(id, labels, values, label, color) {
+    new Chart(document.getElementById(id), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label,
+          data: values,
+          backgroundColor: color,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        responsive: true,
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+  }
+
+  // --- Table ---
+  function renderTable(leads) {
+    const tbody = document.getElementById('leads-table');
+    tbody.innerHTML = leads.map((r, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${r.name || '-'}</strong></td>
+        <td>${r.institution || '-'}</td>
+        <td>${r.course || '-'}</td>
+        <td>${r.phone || '-'}</td>
+        <td>${(r.query || 'Direct').replace('?ref=', '')}</td>
+        <td><span class="badge badge-${(r.device_type||'').toLowerCase()}">${r.device_type || '-'}</span></td>
+        <td>${r.time_spent || 0}s</td>
+        <td>${r.timestamp || '-'}</td>
+      </tr>
+    `).join('');
+  }
+
+  // --- Search ---
+  function filterTable() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    const filtered = allLeads.filter(r =>
+      (r.name || '').toLowerCase().includes(q) ||
+      (r.phone || '').includes(q) ||
+      (r.course || '').toLowerCase().includes(q) ||
+      (r.institution || '').toLowerCase().includes(q)
+    );
+    renderTable(filtered);
+  }
+
+  // --- Download CSV ---
+  function downloadCSV(type) {
+    window.open(`${WORKER}/download/${type}?key=${encodeURIComponent(adminKey)}`, '_blank');
+  }
+</script>
+
+</body>
+</html>
