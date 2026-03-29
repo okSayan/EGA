@@ -32,13 +32,13 @@ async function logVisit() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Secret-Token': SECRET 
+        'X-Secret-Token': SECRET
       },
       body: JSON.stringify({
         query: window.location.search || 'Direct',
         device_type: getDeviceType(),
         resolution: `${window.screen.width}x${window.screen.height}`,
-        timestamp: getLocalTimestamp()  
+        timestamp: getLocalTimestamp()
       })
     });
     const data = await res.json();
@@ -49,7 +49,7 @@ async function logVisit() {
 }
 
 logVisit();
-
+//show card
 if (sessionStorage.getItem('survey-dismissed')) { shown = true; }
 
 function showCard() {
@@ -64,14 +64,14 @@ window.addEventListener('scroll', () => {
 });
 
 setTimeout(showCard, 6000);
-
+//switch stages
 function goToStage(hideId, showId) {
   document.getElementById(hideId).classList.add('hidden');
   const next = document.getElementById(showId);
   next.classList.remove('hidden');
   next.classList.add('stage-enter');
 }
-
+//s1
 async function handleInterest(choice) {
   if (choice === 'yes') {
     goToStage('stage-1', 'stage-2');
@@ -80,7 +80,7 @@ async function handleInterest(choice) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Secret-Token': SECRET 
+        'X-Secret-Token': SECRET
       },
       body: JSON.stringify({
         visitor_id: visitorId,
@@ -94,7 +94,7 @@ async function handleInterest(choice) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Secret-Token': SECRET 
+        'X-Secret-Token': SECRET
       },
       body: JSON.stringify({
         visitor_id: visitorId,
@@ -105,7 +105,7 @@ async function handleInterest(choice) {
     showThankYou("Take your time!", "We're here whenever you're ready!", "");
   }
 }
-
+//s3
 function showThankYou(emoji, heading, message) {
   document.getElementById('thankyou-content').innerHTML = `
     <div style="font-size:36px; margin-bottom:8px;">${emoji}</div>
@@ -124,7 +124,7 @@ function showThankYou(emoji, heading, message) {
     tab.style.display = 'block';
   }, 3000);
 }
-
+//set listeners
 function attachListeners() {
   document.getElementById('survey-close').addEventListener('click', () => {
     card.classList.remove('show');
@@ -132,10 +132,10 @@ function attachListeners() {
   });
 
   document.getElementById('survey-submit').addEventListener('click', async () => {
-    const name        = document.getElementById('s-name').value.trim();
+    const name = document.getElementById('s-name').value.trim();
     const institution = document.getElementById('i-name').value.trim();
-    const course      = document.getElementById('c-name').value.trim();
-    const phone       = document.getElementById('s-phone').value.trim();
+    const course = document.getElementById('c-name').value.trim();
+    const phone = document.getElementById('s-phone').value.trim();
 
     const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
 
@@ -175,54 +175,56 @@ function attachListeners() {
     }
   });
 
-    document.getElementById('s-name').addEventListener('focus', () => {
-        document.body.style.overflow = 'hidden';
-    });
-    document.getElementById('s-phone').addEventListener('focus', () => {
-        document.body.style.overflow = 'hidden';
-    });
-    document.getElementById('i-name').addEventListener('focus', () => {
-        document.body.style.overflow = 'hidden';
-    });
-    document.getElementById('c-name').addEventListener('focus', () => {
-        document.body.style.overflow = 'hidden';
-    });
+  //no bg scroll on input focus
+  document.getElementById('s-name').addEventListener('focus', () => {
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('s-phone').addEventListener('focus', () => {
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('i-name').addEventListener('focus', () => {
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('c-name').addEventListener('focus', () => {
+    document.body.style.overflow = 'hidden';
+  });
 
-    ['s-name', 's-phone', 'i-name', 'c-name'].forEach(id => {
-        document.getElementById(id).addEventListener('blur', () => {
-            document.body.style.overflow = '';
-        });
+  //restore scroll when done
+  ['s-name', 's-phone', 'i-name', 'c-name'].forEach(id => {
+    document.getElementById(id).addEventListener('blur', () => {
+      document.body.style.overflow = '';
     });
+  });
 
-      ['s-name', 'i-name', 'c-name', 's-phone'].forEach(id => {
-        document.getElementById(id).addEventListener('focus', () => {
-            setTimeout(() => {
-                document.getElementById(id).scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }, 300);
+  ['s-name', 'i-name', 'c-name', 's-phone'].forEach(id => {
+    document.getElementById(id).addEventListener('focus', () => {
+      setTimeout(() => {
+        document.getElementById(id).scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
         });
+      }, 300);
     });
-  
-    setupEnterKey();
+  });
+
+  setupEnterKey();
 
 }
 
 function setupEnterKey() {
-    const fields = ['s-name', 'i-name', 'c-name', 's-phone'];
-    fields.forEach((id, index) => {
-        document.getElementById(id).addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                if (index < fields.length - 1) {
-                    document.getElementById(fields[index + 1]).focus();
-                } else {
-                    document.getElementById('survey-submit').click();
-                }
-            }
-        });
+  const fields = ['s-name', 'i-name', 'c-name', 's-phone'];
+  fields.forEach((id, index) => {
+    document.getElementById(id).addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (index < fields.length - 1) {
+          document.getElementById(fields[index + 1]).focus();
+        } else {
+          document.getElementById('survey-submit').click();
+        }
+      }
     });
+  });
 }
 
 function resetCard() {
@@ -257,7 +259,7 @@ function resetCard() {
     });
   }
 }
-
+//enq tab
 tab.addEventListener('click', () => {
   resetCard();
   card.classList.add('show');
