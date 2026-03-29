@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EGA Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: Arial, sans-serif;
@@ -24,7 +29,10 @@
       gap: 12px;
     }
 
-    #login-screen h2 { font-size: 22px; margin-bottom: 8px; }
+    #login-screen h2 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
 
     #login-screen input {
       padding: 12px 16px;
@@ -45,11 +53,21 @@
       width: 280px;
     }
 
-    #login-screen button:hover { background: #47a1f5; }
-    #login-error { color: red; font-size: 13px; display: none; }
+    #login-screen button:hover {
+      background: #47a1f5;
+    }
+
+    #login-error {
+      color: red;
+      font-size: 13px;
+      display: none;
+    }
 
     /* Dashboard */
-    #dashboard { display: none; padding: 20px; }
+    #dashboard {
+      display: none;
+      padding: 20px;
+    }
 
     .top-bar {
       display: flex;
@@ -60,7 +78,10 @@
       gap: 10px;
     }
 
-    .top-bar h1 { font-size: 22px; color: #184e72; }
+    .top-bar h1 {
+      font-size: 22px;
+      color: #184e72;
+    }
 
     .top-bar button {
       padding: 8px 16px;
@@ -85,7 +106,7 @@
       border-radius: 12px;
       padding: 20px;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     }
 
     .stat-card .number {
@@ -112,7 +133,7 @@
       background: white;
       border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     }
 
     .chart-card h3 {
@@ -121,14 +142,16 @@
       margin-bottom: 16px;
     }
 
-    .chart-card canvas { max-height: 220px; }
+    .chart-card canvas {
+      max-height: 220px;
+    }
 
     /* lTable */
     .table-card {
       background: white;
       border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
       overflow-x: auto;
     }
 
@@ -159,8 +182,13 @@
       white-space: nowrap;
     }
 
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f9fbff; }
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #f9fbff;
+    }
 
     .badge {
       padding: 3px 8px;
@@ -169,9 +197,20 @@
       font-weight: 600;
     }
 
-    .badge-mobile { background: #dbeafe; color: #1d4ed8; }
-    .badge-desktop { background: #dcfce7; color: #16a34a; }
-    .badge-tablet { background: #fef9c3; color: #b45309; }
+    .badge-mobile {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .badge-desktop {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .badge-tablet {
+      background: #fef9c3;
+      color: #b45309;
+    }
 
     /* Search */
     .search-bar {
@@ -195,6 +234,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Login -->
@@ -216,6 +256,8 @@
         <div style="display:flex; gap:8px;">
           <button onclick="downloadCSV('visitors')">⬇ Visitors CSV</button>
           <button onclick="downloadCSV('leads')">⬇ Leads CSV</button>
+          <input type="file" id="" sync-file" accept=".txt" style="display: none" onchange="syncSourceMap(event)" />
+          <button onclick="document.getElementById('sync-file').click()">🔄 Sync Sources</button>
           <button onclick="doLogout()" style="background:#c0392b;">Logout</button>
         </div>
       </div>
@@ -287,164 +329,232 @@
     </div>
   </div>
 
-<script>
-  const WORKER = 'https://ega2.bharatyudhishthir-509.workers.dev';
-  let adminKey = '';
-  let allLeads = [];
+  <script>
+    const WORKER = 'https://ega2.bharatyudhishthir-509.workers.dev';
+    let adminKey = '';
+    let allLeads = [];
+    let sourceMap = {};
+    let lastData = null;
 
-  // --- Login ---
-  function doLogin() {
-    const pass = document.getElementById('admin-pass').value.trim();
-    if (!pass) return;
-    adminKey = pass;
-    loadDashboard();
-  }
 
-  document.getElementById('admin-pass').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doLogin();
-  });
-
-  function doLogout() {
-    adminKey = '';
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('admin-pass').value = '';
-  }
-
-  // --- Load Dashboard ---
-  async function loadDashboard() {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    document.getElementById('loading').style.display = 'block';
-    document.getElementById('dash-content').style.display = 'none';
-
-    try {
-      const res = await fetch(`${WORKER}/dashboard/data?key=${encodeURIComponent(adminKey)}`);
-
-      if (res.status === 401) {
-        document.getElementById('login-screen').style.display = 'flex';
-        document.getElementById('dashboard').style.display = 'none';
-        document.getElementById('login-error').style.display = 'block';
-        return;
-      }
-
-      const data = await res.json();
-      renderDashboard(data);
-
-    } catch {
-      document.getElementById('loading').textContent = 'Failed to load. Check your connection.';
+    // --- Login ---
+    async function doLogin() {
+      const pass = document.getElementById('admin-pass').value.trim();
+      if (!pass) return;
+      adminKey = pass;
+      await loadSourceMap();
+      loadDashboard();
     }
-  }
 
-  // --- Render ---
-  function renderDashboard(data) {
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('dash-content').style.display = 'block';
-
-    // Stat cards
-    const visitors   = data.counts.total_visitors || 0;
-    const leads      = data.counts.total_leads || 0;
-    const conversion = visitors > 0 ? ((leads / visitors) * 100).toFixed(1) + '%' : '0%';
-    const today      = data.leadsPerDay[0]?.date === new Date().toISOString().split('T')[0]
-                       ? data.leadsPerDay[0].count : 0;
-
-    document.getElementById('stat-visitors').textContent   = visitors;
-    document.getElementById('stat-leads').textContent      = leads;
-    document.getElementById('stat-conversion').textContent = conversion;
-    document.getElementById('stat-today').textContent      = today;
-
-    // Charts
-    renderPie('chart-devices', data.devices, 'device_type',
-      ['#3b82f6','#10b981','#f59e0b','#ef4444']);
-
-    renderPie('chart-interest', data.interests, 'interest',
-      ['#10b981','#ef4444','#f59e0b','#6b7280']);
-
-    renderBar('chart-leads-day',
-      data.leadsPerDay.reverse().map(r => r.date),
-      data.leadsPerDay.map(r => r.count),
-      'Leads', '#184e72');
-
-    renderBar('chart-sources',
-      data.sources.map(r => r.query.replace('?ref=', '')),
-      data.sources.map(r => r.count),
-      'Visits', '#47a1f5');
-
-    // Leads table
-    allLeads = data.leads;
-    renderTable(allLeads);
-  }
-
-  // --- Charts ---
-  function renderPie(id, data, labelKey, colors) {
-    new Chart(document.getElementById(id), {
-      type: 'pie',
-      data: {
-        labels: data.map(r => r[labelKey] || 'Unknown'),
-        datasets: [{ data: data.map(r => r.count), backgroundColor: colors }]
-      },
-      options: {
-        plugins: { legend: { position: 'bottom' } },
-        responsive: true
-      }
+    document.getElementById('admin-pass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
     });
-  }
 
-  function renderBar(id, labels, values, label, color) {
-    new Chart(document.getElementById(id), {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label,
-          data: values,
-          backgroundColor: color,
-          borderRadius: 6
-        }]
-      },
-      options: {
-        plugins: { legend: { display: false } },
-        responsive: true,
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+    function doLogout() {
+      adminKey = '';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('admin-pass').value = '';
+    }
+
+    // --- Load Dashboard ---
+    async function loadDashboard() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('dash-content').style.display = 'none';
+
+      try {
+        const res = await fetch(`${WORKER}/dashboard/data?key=${encodeURIComponent(adminKey)}`);
+
+        if (res.status === 401) {
+          document.getElementById('login-screen').style.display = 'flex';
+          document.getElementById('dashboard').style.display = 'none';
+          document.getElementById('login-error').style.display = 'block';
+          return;
+        }
+
+        const data = await res.json();
+        renderDashboard(data);
+
+      } catch {
+        document.getElementById('loading').textContent = 'Failed to load. Check your connection.';
       }
-    });
-  }
+    }
 
-  // --- Table ---
-  function renderTable(leads) {
-    const tbody = document.getElementById('leads-table');
-    tbody.innerHTML = leads.map((r, i) => `
+    // --- Render ---
+    function renderDashboard(data) {
+      lastData = data;
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('dash-content').style.display = 'block';
+
+      // Stat cards
+      const visitors = data.counts.total_visitors || 0;
+      const leads = data.counts.total_leads || 0;
+      const conversion = visitors > 0 ? ((leads / visitors) * 100).toFixed(1) + '%' : '0%';
+      const today = data.leadsPerDay[0]?.date === new Date().toISOString().split('T')[0]
+        ? data.leadsPerDay[0].count : 0;
+
+      document.getElementById('stat-visitors').textContent = visitors;
+      document.getElementById('stat-leads').textContent = leads;
+      document.getElementById('stat-conversion').textContent = conversion;
+      document.getElementById('stat-today').textContent = today;
+
+      // Charts
+      renderPie('chart-devices', data.devices, 'device_type',
+        ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']);
+
+      renderPie('chart-interest', data.interests, 'interest',
+        ['#10b981', '#ef4444', '#f59e0b', '#6b7280']);
+
+      renderBar('chart-leads-day',
+        data.leadsPerDay.reverse().map(r => r.date),
+        data.leadsPerDay.map(r => r.count),
+        'Leads', '#184e72');
+
+      renderBar('chart-sources',
+        // data.sources.map(r => r.query.replace('?ref=', '')),
+        data.sources.map(r => friendlySource(r.query)),
+        data.sources.map(r => r.count),
+        'Visits', '#47a1f5');
+
+      // Leads table
+      allLeads = data.leads;
+      renderTable(allLeads);
+    }
+
+    // --- Charts ---
+    function renderPie(id, data, labelKey, colors) {
+      new Chart(document.getElementById(id), {
+        type: 'pie',
+        data: {
+          labels: data.map(r => r[labelKey] || 'Unknown'),
+          datasets: [{ data: data.map(r => r.count), backgroundColor: colors }]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          responsive: true
+        }
+      });
+    }
+
+    function renderBar(id, labels, values, label, color) {
+      new Chart(document.getElementById(id), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label,
+            data: values,
+            backgroundColor: color,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          responsive: true,
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+
+    // --- Table ---
+    function renderTable(leads) {
+      const tbody = document.getElementById('leads-table');
+      tbody.innerHTML = leads.map((r, i) => `
       <tr>
         <td>${i + 1}</td>
         <td><strong>${r.name || '-'}</strong></td>
         <td>${r.institution || '-'}</td>
         <td>${r.course || '-'}</td>
         <td>${r.phone || '-'}</td>
-        <td>${(r.query || 'Direct').replace('?ref=', '')}</td>
-        <td><span class="badge badge-${(r.device_type||'').toLowerCase()}">${r.device_type || '-'}</span></td>
+        <!-- <td>${(r.query || 'Direct').replace('?ref=', '')}</td> -->
+        <td>${friendlySource(r.query)}</td>
+        <td><span class="badge badge-${(r.device_type || '').toLowerCase()}">${r.device_type || '-'}</span></td>
         <td>${r.time_spent || 0}s</td>
         <td>${r.timestamp || '-'}</td>
       </tr>
     `).join('');
-  }
+    }
 
-  // --- Search ---
-  function filterTable() {
-    const q = document.getElementById('search-input').value.toLowerCase();
-    const filtered = allLeads.filter(r =>
-      (r.name || '').toLowerCase().includes(q) ||
-      (r.phone || '').includes(q) ||
-      (r.course || '').toLowerCase().includes(q) ||
-      (r.institution || '').toLowerCase().includes(q)
-    );
-    renderTable(filtered);
-  }
+    // --- Search ---
+    function filterTable() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const filtered = allLeads.filter(r =>
+        (r.name || '').toLowerCase().includes(q) ||
+        (r.phone || '').includes(q) ||
+        (r.course || '').toLowerCase().includes(q) ||
+        (r.institution || '').toLowerCase().includes(q)
+      );
+      renderTable(filtered);
+    }
 
-  // --- Download CSV ---
-  function downloadCSV(type) {
-    window.open(`${WORKER}/download/${type}?key=${encodeURIComponent(adminKey)}`, '_blank');
-  }
-</script>
+    // --- Load source map from worker ---
+    async function loadSourceMap() {
+      try {
+        const res = await fetch(`${WORKER}/sourcemap`);
+        sourceMap = await res.json();
+      } catch {
+        sourceMap = {};
+      }
+    }
+
+    // --- Friendly source name ---
+    function friendlySource(query) {
+      return sourceMap[query] || query || 'Direct Visit 🔗';
+    }
+
+    // --- Sync sources.txt to worker ---
+    async function syncSourceMap(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+
+        const map = {};
+        text.split('\n').forEach(line => {
+          line = line.trim();
+          if (!line) return;
+          const firstEquals = line.indexOf('=');
+          if (firstEquals === -1) return;
+          const key = line.substring(0, firstEquals).trim();
+          const value = line.substring(firstEquals + 1).trim();
+          if (key && value) map[key] = value;
+        });
+
+        const res = await fetch(
+          `${WORKER}/sourcemap/sync?key=${encodeURIComponent(adminKey)}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(map)
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+          sourceMap = map;
+          renderDashboard(lastData);
+          alert('✅ Sources synced!');
+        } else {
+          alert('Sync failed: ' + data.error);
+        }
+
+      } catch {
+        alert('Something went wrong reading the file!');
+      }
+
+      event.target.value = '';
+    }
+
+    // --- Download CSV ---
+    function downloadCSV(type) {
+      window.open(`${WORKER}/download/${type}?key=${encodeURIComponent(adminKey)}`, '_blank');
+    }
+  </script>
 
 </body>
+
 </html>
