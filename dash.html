@@ -256,7 +256,7 @@
         <div style="display:flex; gap:8px;">
           <button onclick="downloadCSV('visitors')">⬇ Visitors CSV</button>
           <button onclick="downloadCSV('leads')">⬇ Leads CSV</button>
-          <input type="file" id="" sync-file" accept=".txt" style="display: none" onchange="syncSourceMap(event)" />
+          <input type="file" id="sync-file" sync-file" accept=".txt" style="display: none" onchange="syncSourceMap(event)" />
           <button onclick="document.getElementById('sync-file').click()">🔄 Sync Sources</button>
           <button onclick="doLogout()" style="background:#c0392b;">Logout</button>
         </div>
