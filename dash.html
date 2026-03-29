@@ -516,10 +516,10 @@
         text.split('\n').forEach(line => {
           line = line.trim();
           if (!line) return;
-          const firstEquals = line.indexOf('=');
-          if (firstEquals === -1) return;
-          const key = line.substring(0, firstEquals).trim();
-          const value = line.substring(firstEquals + 1).trim();
+          const firstDash = line.indexOf('-');
+          if (firstDash === -1) return;
+          const key = '?ok=' + line.substring(0, firstDash).trim();
+          const value = line.substring(firstDash + 3).trim();
           if (key && value) map[key] = value;
         });
 
