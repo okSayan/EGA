@@ -387,13 +387,18 @@
                 // Get PDF blob and trigger download
                 const blob = await response.blob();
                 const blobUrl = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = 'Evolution_Guidance_Academy_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
-                console.log('Initiating download for PDF:', link.download);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                if (/iphone|ipad|ipod|Android/i.test(navigator.userAgent)) {
+                    // For iOS, open PDF in new tab
+                    window.open(blobUrl, '_blank');
+                } else {
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = 'Evolution_Guidance_Academy_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
+                    console.log('Initiating download for PDF:', link.download);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
                 URL.revokeObjectURL(blobUrl); // clean up memory
 
                 successMsg.style.display = 'block';
