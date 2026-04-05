@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EGA PDF Download</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <style>
+        :root {
+            --ink: #234457;
+            --paper: #c8dae8;
+            --accent: #59aedf;
+            --stamp: #8b1a1a;
+            --accent2: #2e8cb8;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        /* ── Main card ── */
+        .card {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+            background: var(--paper);
+            padding: 3.5rem 3rem 3rem;
+            color: var(--ink);
+            box-shadow: 4px 4px 12px 0.2px #7bafce;
+            animation: unfold .6s cubic-bezier(.22, .68, 0, 1.2) both;
+        }
+
+        @keyframes unfold {
+            from {
+                opacity: 0;
+                transform: scale(.94) translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Corner fold */
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 36px 36px;
+            border-color: transparent transparent #19495f var(--accent);
+            filter: drop-shadow(-2px -2px 2px rgba(0, 0, 0, .15));
+        }
+
+        .logo {
+            width: 92px;
+            margin: 0 auto 1.2rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: #f0edeb solid 2px;
+            border-radius: 50%;
+            background-color: #c8dae8;
+            animation: sealPulse 4s ease-in-out infinite;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            /* background-color: #c8dae8; */
+        }
+
+        @keyframes sealPulse {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 4px rgba(46, 67, 184, 0.35));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 12px rgba(46, 184, 173, 0.65));
+            }
+        }
+
+        .divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--accent), transparent);
+            margin: 1.2rem 0;
+        }
+
+        h1 {
+            font-size: 1rem;
+            text-align: center;
+            line-height: 1.2;
+            color: var(--ink);
+            margin-bottom: .55rem;
+        }
+
+        .subtitle {
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: .9rem;
+            color: #215ddd;
+            margin-bottom: .5rem;
+        }
+
+        /* ── META ROW ── */
+        .meta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            font-size: .65rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: #7a6248;
+            margin: .8rem 0 1.4rem;
+        }
+
+        .meta span {
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        .meta span::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent2);
+        }
+
+        .turnstile-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .75rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .verify-label {
+            font-size: .65rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: #16147e;
+        }
+
+        .turnstile-box {
+            border: 1px dashed var(--accent);
+            padding: .75rem 1rem;
+            background: rgba(255, 255, 255, .18);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-download {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            width: 100%;
+            padding: .9rem 1.5rem;
+            background: var(--ink);
+            color: var(--paper);
+            font-family: 'Special Elite', monospace;
+            font-size: .85rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background .2s, transform .12s;
+            text-decoration: none;
+        }
+
+        .btn-download::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 40%, rgba(255, 255, 255, .06) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform .45s;
+        }
+
+        .btn-download:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-download:hover {
+            background: #0d5c1e;
+        }
+
+        .btn-download:active {
+            transform: scale(.98);
+        }
+
+        .btn-download:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-download svg {
+            flex-shrink: 0;
+        }
+
+        /* ── SUCCESS STATE ── */
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: .8rem;
+            border: 1px solid var(--accent2);
+            background: rgba(184, 150, 46, .08);
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            font-size: .88rem;
+            color: #246d12;
+            margin-top: .9rem;
+            animation: fadeIn .4s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* ── CLASSIFICATION LINES ── */
+        .classline {
+            font-size: .58rem;
+            letter-spacing: .35em;
+            text-transform: uppercase;
+            text-align: center;
+            color: var(--stamp);
+            opacity: .7;
+            margin-bottom: .5rem;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 2.8rem 1.5rem 2.2rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .meta {
+                flex-direction: column;
+                align-items: center;
+                gap: .5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card" role="main">
+        <div class="logo" aria-hidden="true">
+            <img src="files/GLA.png" />
+        </div>
+        <h1>Evolution Guidance Academy</h1>
+        <p class="subtitle">PDF Downnload</p>
+
+        <div class="meta">
+            <span id="pdfSize"></span>
+        </div>
+        <hr class="divider" />
+
+        <!-- Verification & Download -->
+        <div class="turnstile-wrap">
+            <p class="verify-label">Verification Required</p>
+            <div class="turnstile-box">
+                <!--
+        Replace data-sitekey with your actual Cloudflare Turnstile site key.
+        The dummy key "1x00000000000000000000AA" renders the widget in test/demo mode.
+      -->
+                <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="light"
+                    data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-download" id="dlBtn" disabled aria-disabled="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Download
+        </button>
+
+        <div class="success-msg" id="successMsg" role="status" aria-live="polite">
+            - Your download has been authorised -
+        </div>
+
+    </div>
+
+    <script>
+        const WORKER_URL = 'https://ega2.bharatyudhishthir-509.workers.dev/get-pdf'
+
+        const dlBtn = document.getElementById('dlBtn');
+        const successMsg = document.getElementById('successMsg');
+        let cfToken = null;
+
+        // Called by Turnstile on success
+        window.onTurnstileSuccess = function (token) {
+            cfToken = token;
+            dlBtn.disabled = false;
+            dlBtn.setAttribute('aria-disabled', 'false');
+        };
+
+        // Called when Turnstile token expires
+        window.onTurnstileExpired = function () {
+            cfToken = null;
+            dlBtn.disabled = true;
+            dlBtn.setAttribute('aria-disabled', 'true');
+            successMsg.style.display = 'none';
+        };
+
+        dlBtn.addEventListener('click', async () => {
+            if (!cfToken) return;
+
+            // Show loading state
+            dlBtn.disabled = true;
+            dlBtn.textContent = 'Verifying...';
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: cfToken })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Verification failed');
+                }
+
+                // Get PDF blob and trigger download
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = 'Evolution_Guidance_Academy_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
+                console.log('Initiating download for PDF:', link.download);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl); // clean up memory
+
+                successMsg.style.display = 'block';
+
+            } catch (err) {
+                alert('Something went wrong. Please try again.');
+            } finally {
+                // Reset button
+                dlBtn.disabled = true;
+                dlBtn.textContent = 'Download';
+            }
+        });
+    </script>
+</body>
+
+</html>
