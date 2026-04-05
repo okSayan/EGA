@@ -41,7 +41,7 @@
             background: var(--paper);
             padding: 3.5rem 3rem 3rem;
             color: var(--ink);
-            box-shadow:4px 4px 12px 0.2px #7bafce;
+            box-shadow: 4px 4px 12px 0.2px #7bafce;
             animation: unfold .6s cubic-bezier(.22, .68, 0, 1.2) both;
         }
 
@@ -288,7 +288,7 @@
 <body>
 
     <div class="card" role="main">
-        <div class="logo">
+        <div class="logo" aria-hidden="true">
             <img src="files/GLA.png" />
         </div>
         <h1>Evolution Guidance Academy</h1>
@@ -330,18 +330,20 @@
     </div>
 
     <script>
-        const PDF_URL = 'https://example.com/your-document.pdf';
+        const WORKER_URL = 'https://ega2.bharatyudhishthir-509.workers.dev/get-pdf'
 
         const dlBtn = document.getElementById('dlBtn');
         const successMsg = document.getElementById('successMsg');
         let cfToken = null;
 
+        // Called by Turnstile on success
         window.onTurnstileSuccess = function (token) {
             cfToken = token;
             dlBtn.disabled = false;
             dlBtn.setAttribute('aria-disabled', 'false');
         };
 
+        // Called when Turnstile token expires
         window.onTurnstileExpired = function () {
             cfToken = null;
             dlBtn.disabled = true;
@@ -352,37 +354,42 @@
         dlBtn.addEventListener('click', async () => {
             if (!cfToken) return;
 
-            /*
-              ── SERVER-SIDE VALIDATION (recommended) ──────────────────────────────
-              Before triggering the download you should verify the Turnstile token
-              on your server so it cannot be bypassed on the client side.
-        
-              Example fetch to your own endpoint:
-        
-                const res = await fetch('/api/verify-turnstile', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ token: cfToken })
+            // Show loading state
+            dlBtn.disabled = true;
+            dlBtn.textContent = 'Verifying...';
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: cfToken })
                 });
-                const { success } = await res.json();
-                if (!success) { alert('Verification failed. Please try again.'); return; }
-        
-              Your server calls Cloudflare's siteverify endpoint:
-                POST https://challenges.cloudflare.com/turnstile/v0/siteverify
-                { secret: YOUR_SECRET_KEY, response: cfToken }
-              ─────────────────────────────────────────────────────────────────────
-            */
 
-            // Client-side demo: trigger download directly
-            const link = document.createElement('a');
-            link.href = PDF_URL;
-            link.download = 'meridian-report.pdf';
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+                if (!response.ok) {
+                    throw new Error('Verification failed');
+                }
 
-            successMsg.style.display = 'block';
+                // Get PDF blob and trigger download
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = 'Evolution_Guidance_Academy_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
+                console.log('Initiating download for PDF:', link.download);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl); // clean up memory
+
+                successMsg.style.display = 'block';
+
+            } catch (err) {
+                alert('Something went wrong. Please try again.');
+            } finally {
+                // Reset button
+                dlBtn.disabled = true;
+                dlBtn.textContent = 'Download';
+            }
         });
     </script>
 </body>
