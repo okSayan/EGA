@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EGA PDF Download</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <link rel="icon" type="image/x-icon" href="files/GLA.webp">
 
     <style>
         :root {
@@ -25,12 +26,13 @@
         }
 
         body {
-            min-height: 100vh;
+            /* min-height: 100vh; */
             background-color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 2rem 1rem;
+            margin-top: 0px;
         }
 
         /* ── Main card ── */
@@ -94,7 +96,7 @@
 
             0%,
             100% {
-                filter: drop-shadow(0 0 4px rgba(46, 67, 184, 0.35));
+                filter: drop-shadow(0 0 4px rgba(221, 45, 45, 0.5));
             }
 
             50% {
@@ -292,10 +294,10 @@
             <img src="files/GLA.png" />
         </div>
         <h1>Evolution Guidance Academy</h1>
-        <p class="subtitle">PDF Downnload</p>
+        <p class="subtitle">PDF Download</p>
 
         <div class="meta">
-            <span id="pdfSize"></span>
+            <span id="pdfSize">37 MB</span>
         </div>
         <hr class="divider" />
 
@@ -303,23 +305,23 @@
         <div class="turnstile-wrap">
             <p class="verify-label">Verification Required</p>
             <div class="turnstile-box">
-                
+
                 <div class="cf-turnstile" data-sitekey="0x4AAAAAAC02SPNUmLlPZdUS" data-theme="light"
                     data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired">
                 </div>
             </div>
         </div>
-
         <button class="btn-download" id="dlBtn" disabled aria-disabled="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            Download
+            <div id="downloadIcon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+            </div>
+            <div id="btn-download-txt">Download</div>
         </button>
-
         <div class="success-msg" id="successMsg" role="status" aria-live="polite">
             - Your download has been authorised -
         </div>
@@ -327,9 +329,24 @@
     </div>
 
     <script>
+
+        // const pdfSizeEl = document.getElementById('pdfSize');
+        //file size
+        // async function loadFileSize() {
+        //     try {
+        //         const res = await fetch('https://ega2.bharatyudhishthir-509.workers.dev/get-pdf-size');
+        //         const { size } = await res.json();
+        //         pdfSizeEl.textContent = size;
+        //     } catch {
+        //         pdfSizeEl.textContent = 'N/A';
+        //     }
+        // }
+
         const WORKER_URL = 'https://ega2.bharatyudhishthir-509.workers.dev/get-pdf'
 
         const dlBtn = document.getElementById('dlBtn');
+        const btn_download_txt = document.getElementById('btn-download-txt');
+        const downloadIcon = document.getElementById('downloadIcon');
         const successMsg = document.getElementById('successMsg');
         let cfToken = null;
 
@@ -353,7 +370,8 @@
 
             // Show loading state
             dlBtn.disabled = true;
-            dlBtn.textContent = 'Verifying...';
+            btn_download_txt.textContent = 'Verifying...';
+            downloadIcon.hidden = true;
 
             try {
                 const response = await fetch(WORKER_URL, {
@@ -385,7 +403,8 @@
             } finally {
                 // Reset button
                 dlBtn.disabled = true;
-                dlBtn.textContent = 'Download';
+                btn_download_txt.textContent = 'Download';
+                downloadIcon.hidden = false;
             }
         });
     </script>
