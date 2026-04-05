@@ -575,6 +575,30 @@ footer {
       overflow: visible;
     }
 
+    .p {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #59aedf;
+      opacity: 0;
+    }
+
+    .p:nth-child(1)  { left: 10%; top: 80%; animation: floatP 2.5s ease 2.2s infinite; }
+    .p:nth-child(2)  { left: 25%; top: 90%; animation: floatP 2s ease 2.5s infinite; width:2px; height:2px; background:#7ecfed; }
+    .p:nth-child(3)  { left: 50%; top: 95%; animation: floatP 3s ease 2.0s infinite; background:#fff; }
+    .p:nth-child(4)  { left: 75%; top: 85%; animation: floatP 2.2s ease 2.7s infinite; width:2px; height:2px; }
+    .p:nth-child(5)  { left: 90%; top: 80%; animation: floatP 2.8s ease 2.3s infinite; background:#7ecfed; }
+    .p:nth-child(6)  { left: 15%; top: 20%; animation: floatP 2.4s ease 2.6s infinite; width:2px; height:2px; }
+    .p:nth-child(7)  { left: 60%; top: 15%; animation: floatP 2.1s ease 2.9s infinite; background:#fff; }
+    .p:nth-child(8)  { left: 85%; top: 25%; animation: floatP 2.6s ease 2.1s infinite; width:2px; height:2px; }
+
+    @keyframes floatP {
+      0%   { opacity: 0;   transform: translateY(0) scale(1); }
+      20%  { opacity: 0.7; }
+      100% { opacity: 0;   transform: translateY(-28px) scale(0.4); }
+    }
+
     /* ── Glow pulse on name ── */
     .name-glow {
       position: absolute;
