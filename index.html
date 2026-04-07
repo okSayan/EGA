@@ -43,7 +43,6 @@
 
     <!--Images-->
     <div style="display: block;">
-
         <img class="page-img lazy" data-src="files/cLh.webp">
         <img class="page-img lazy" data-src="files/NKR.webp">
         <img class="page-img lazy" data-src="files/d6m.webp">
@@ -63,14 +62,56 @@
         <img class="page-img lazy" data-src="files/uWz.webp">
         <img class="page-img lazy" data-src="files/ZHC.webp">
         <img class="page-img lazy" data-src="files/tHZ.webp">
-
     </div>
+
+    <div id="pdf-modal-overlay">
+        <div class="download-card" id="download-card">
+            <button id="download-close">✕</button>
+            <div class="logo" aria-hidden="true">
+                <img src="files/GLA.png" />
+            </div>
+            <h1>Evolution Guidance Academy</h1>
+            <p class="subtitle">PDF Download</p>
+
+            <div class="meta">
+                <span id="pdfSize">37 MB</span>
+            </div>
+            <hr class="divider" />
+
+            <!-- Verification & Download -->
+            <div class="turnstile-wrap">
+                <p class="verify-label">Verification Required</p>
+                <div class="turnstile-box">
+
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAC02SPNUmLlPZdUS" data-theme="light"
+                        data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired">
+                    </div>
+                </div>
+            </div>
+            <button class="btn-download" id="dlBtn" disabled aria-disabled="true">
+                <div id="downloadIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                </div>
+                <div id="btn-download-txt">Download</div>
+            </button>
+            <div class="success-msg" id="successMsg" role="status" aria-live="polite">
+                - Your download has been authorised -
+            </div>
+
+        </div>
+    </div>
+
     <footer>
 
         <div class="footer-topbar"></div>
 
         <!-- ── PDF Download Banner ── -->
-        <!-- <div class="footer-pdf-banner">
+        <div class="footer-pdf-banner">
             <div class="pdf-banner-left">
                 <div class="pdf-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#59aedf" stroke-width="1.8"
@@ -86,7 +127,7 @@
                     <span>Courses, fees, faculty & everything you need to know about EGA — all in one PDF.</span>
                 </div>
             </div>
-            <a href="download.html" class="pdf-download-btn">
+            <button onclick="openPdfModal()" class="pdf-download-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -94,8 +135,8 @@
                     <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 Get PDF
-            </a>
-        </div> -->
+            </button>
+        </div>
 
         <!-- ── Main Grid ── -->
         <div class="footer-main">
@@ -222,7 +263,7 @@
 
             });
 
-        }, { rootMargin: '200px'});
+        }, { rootMargin: '200px' });
 
         images.forEach(img => observer.observe(img));
 
@@ -250,6 +291,93 @@
         }
     </script>
     <script src="script.js"></script>
+
+    <!--download pdf-->
+    <script>
+
+        // const pdfSizeEl = document.getElementById('pdfSize');
+        //file size
+        // async function loadFileSize() {
+        //     try {
+        //         const res = await fetch('https://ega2.bharatyudhishthir-509.workers.dev/get-pdf-size');
+        //         const { size } = await res.json();
+        //         pdfSizeEl.textContent = size;
+        //     } catch {
+        //         pdfSizeEl.textContent = 'N/A';
+        //     }
+        // }
+
+        const WORKER_URL = 'https://ega2.bharatyudhishthir-509.workers.dev/get-pdf'
+
+        const dlBtn = document.getElementById('dlBtn');
+        const btn_download_txt = document.getElementById('btn-download-txt');
+        const downloadIcon = document.getElementById('downloadIcon');
+        const successMsg = document.getElementById('successMsg');
+        let cfToken = null;
+
+        // Called by Turnstile on success
+        window.onTurnstileSuccess = function (token) {
+            cfToken = token;
+            dlBtn.disabled = false;
+            dlBtn.setAttribute('aria-disabled', 'false');
+        };
+
+        // Called when Turnstile token expires
+        window.onTurnstileExpired = function () {
+            cfToken = null;
+            dlBtn.disabled = true;
+            dlBtn.setAttribute('aria-disabled', 'true');
+            successMsg.style.display = 'none';
+        };
+
+        dlBtn.addEventListener('click', async () => {
+            if (!cfToken) return;
+
+            // Show loading state
+            dlBtn.disabled = true;
+            btn_download_txt.textContent = 'Verifying...';
+            downloadIcon.hidden = true;
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: cfToken })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Verification failed');
+                }
+
+                // Get PDF blob and trigger download
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                if (/iphone|ipad|ipod|Android/i.test(navigator.userAgent)) {
+                    // For iOS, open PDF in new tab
+                    window.open(blobUrl, '_blank');
+                } else {
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = 'Evolution_Guidance_Academy_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
+                    console.log('Initiating download for PDF:', link.download);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+                URL.revokeObjectURL(blobUrl); // clean up memory
+
+                successMsg.style.display = 'block';
+
+            } catch (err) {
+                alert('Something went wrong. Please try again.');
+            } finally {
+                // Reset button
+                dlBtn.disabled = true;
+                btn_download_txt.textContent = 'Download';
+                downloadIcon.hidden = false;
+            }
+        });
+    </script>
 </body>
 
 </html>

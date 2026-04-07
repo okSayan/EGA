@@ -267,3 +267,38 @@ tab.addEventListener('click', () => {
 });
 
 attachListeners();
+
+// ── PDF Modal ──
+const pdfOverlay = document.getElementById('pdf-modal-overlay');
+let turnstileWidgetId = null;
+
+function openPdfModal() {
+  pdfOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  if (window.turnstile) {
+    if(turnstileWidgetId !== null) {
+      turnstile.reset(turnstileWidgetId);
+    } else {
+      turnstileWidgetId = turnstile.render('.cf-turnstile', {
+        sitekey: '0x4AAAAAAC02SPNUmLlPZdUS',
+        callback: 'onTurnstileSuccess',
+        'expired-callback': 'onTurnstileExpired'
+      });
+    }
+  }
+}
+
+// Close button
+document.getElementById('download-close').addEventListener('click', () => {
+  pdfOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+});
+
+// Click outside to close
+pdfOverlay.addEventListener('click', (e) => {
+  if (e.target === pdfOverlay) {
+    pdfOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
