@@ -776,7 +776,7 @@ footer::before {
 /*download*/
 .download-card {
   position: relative;
-  width: 100%;
+  width: 50%;
   /* max-width: 560px; */
   background: var(--paper);
   padding: 3.5rem 3rem 3rem;
