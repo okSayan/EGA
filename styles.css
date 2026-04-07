@@ -337,8 +337,9 @@ footer::before {
   margin: 0 auto;
   padding: 3rem 2rem 2rem;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.4fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 2.5rem;
+  margin-bottom: 30px;
 }
 
 /* Brand column */
@@ -571,7 +572,7 @@ footer::before {
 
   .footer-bottom {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: .6rem;
   }
 
@@ -1072,7 +1073,7 @@ h1 {
   }
 }
 
-#download-close{
+#download-close {
   position: absolute;
   top: 12px;
   right: 14px;
