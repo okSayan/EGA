@@ -776,8 +776,8 @@ footer::before {
 /*download*/
 .download-card {
   position: relative;
-  width: 50%;
-  /* max-width: 560px; */
+  width: 100%;
+  max-width: 560px;
   background: var(--paper);
   padding: 3.5rem 3rem 3rem;
   color: var(--ink);
@@ -1081,4 +1081,35 @@ h1 {
   font-size: 16px;
   cursor: pointer;
   color: #cc0404c0;
+}
+@media (max-width: 480px) {
+  .download-card {
+    padding: 2.5rem 1.2rem 1.5rem;
+    border-radius: 8px
+  }
+  .logo{
+    width:64px;
+    margin-bottom:.8rem
+  }
+  h1{
+  font-size:.85rem;
+  }
+  .subtitle{
+    font-size:.78rem
+  }
+  .turnstile-box{
+    padding: .4rem .5rem;
+  }
+  .btn-download{
+    font-size:.75rem;
+    padding: .7rem 1rem;
+  }
+  #pdf-modal-overlay {
+    padding: .5rem;
+    align-items: flex-end;;
+  }
+  .download-card{
+    max-height: 92vh;
+    overflow-y: auto;
+  }
 }
