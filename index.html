@@ -82,9 +82,7 @@
             <div class="turnstile-wrap">
                 <p class="verify-label">Verification Required</p>
                 <div class="turnstile-box">
-
-                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAC02SPNUmLlPZdUS" data-theme="light"
-                        data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired">
+                    <div id="pdf-turnstile-container" data-theme="light">
                     </div>
                 </div>
             </div>
@@ -291,93 +289,6 @@
         }
     </script>
     <script src="script.js"></script>
-
-    <!--download pdf-->
-    <script>
-
-        // const pdfSizeEl = document.getElementById('pdfSize');
-        //file size
-        // async function loadFileSize() {
-        //     try {
-        //         const res = await fetch('https://ega2.bharatyudhishthir-509.workers.dev/get-pdf-size');
-        //         const { size } = await res.json();
-        //         pdfSizeEl.textContent = size;
-        //     } catch {
-        //         pdfSizeEl.textContent = 'N/A';
-        //     }
-        // }
-
-        const WORKER_URL = 'https://ega2.bharatyudhishthir-509.workers.dev/get-pdf'
-
-        const dlBtn = document.getElementById('dlBtn');
-        const btn_download_txt = document.getElementById('btn-download-txt');
-        const downloadIcon = document.getElementById('downloadIcon');
-        const successMsg = document.getElementById('successMsg');
-        let cfToken = null;
-
-        // Called by Turnstile on success
-        window.onTurnstileSuccess = function (token) {
-            cfToken = token;
-            dlBtn.disabled = false;
-            dlBtn.setAttribute('aria-disabled', 'false');
-        };
-
-        // Called when Turnstile token expires
-        window.onTurnstileExpired = function () {
-            cfToken = null;
-            dlBtn.disabled = true;
-            dlBtn.setAttribute('aria-disabled', 'true');
-            successMsg.style.display = 'none';
-        };
-
-        dlBtn.addEventListener('click', async () => {
-            if (!cfToken) return;
-
-            // Show loading state
-            dlBtn.disabled = true;
-            btn_download_txt.textContent = 'Verifying...';
-            downloadIcon.hidden = true;
-
-            try {
-                const response = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token: cfToken })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Verification failed');
-                }
-
-                // Get PDF blob and trigger download
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                if (/iphone|ipad|ipod|Android/i.test(navigator.userAgent)) {
-                    // For iOS, open PDF in new tab
-                    window.open(blobUrl, '_blank');
-                } else {
-                    const link = document.createElement('a');
-                    link.href = blobUrl;
-                    link.download = 'Evolution_Guidance_Academy_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
-                    console.log('Initiating download for PDF:', link.download);
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }
-                URL.revokeObjectURL(blobUrl); // clean up memory
-
-                successMsg.style.display = 'block';
-
-            } catch (err) {
-                alert('Something went wrong. Please try again.');
-            } finally {
-                // Reset button
-                dlBtn.disabled = true;
-                btn_download_txt.textContent = 'Download';
-                downloadIcon.hidden = false;
-            }
-        });
-    </script>
 </body>
 
 </html>

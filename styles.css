@@ -43,7 +43,7 @@ body {
   display: block;
   margin: 0 auto 30px auto;
   min-height: 200px;
-  background: linear-gradient(90 deg, #f0f4f7 25%, #dde8ef 50%, #f0f4f7 75%);
+  background: linear-gradient(90deg, #f0f4f7 25%, #dde8ef 50%, #f0f4f7 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
   filter: blur(10px);
@@ -817,10 +817,11 @@ footer::before {
   display: none;
   position: fixed;
   inset: 0;
-  background-color: (0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   z-index: 99999;
   align-items: center;
+  justify-content: center;
   padding: 1rem;
   overflow-y: auto;
 }
