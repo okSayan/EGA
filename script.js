@@ -354,19 +354,28 @@ dlBtn.addEventListener('click', async () => {
     const blob = await response.blob();
     const blobUrl = URL.createObjectURL(blob);
 
-    if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
-      window.open(blobUrl, '_blank');
-    } else {
+    // if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
+    //   window.open(blobUrl, '_blank');
+    // } else {
       const link = document.createElement('a');
       link.href = blobUrl;
       link.download = 'EGA_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    }
+    // }
 
     URL.revokeObjectURL(blobUrl);
     successMsg.style.display = 'block';
+
+    fetch('https://ega2.bharatyudhishthir-509.workers.dev/log-download', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        device_type: getDeviceType(),
+        timestamp: getLocalTimestamp()
+      })
+    }).catch(() => {});
     //autoclose
     setTimeout(() => {
       pdfOverlay.classList.remove('open');
