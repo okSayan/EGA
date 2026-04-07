@@ -34,15 +34,29 @@ body {
     max-width: 900px;
     display: block;
     margin: 0 auto 30px auto;
-
+    min-height: 200px;
+    background: linear-gradient(90 deg, #f0f4f7 25%, #dde8ef 50%, #f0f4f7 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
     filter: blur(10px);
     opacity: 0;
     transition: opacity .4s ease, filter .4s ease;
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100%{
+    background-position: -200% 0;
+  }
+}
+
 .page-img.loaded {
     opacity: 1;
     filter: blur(0);
+    background: none;
+    animation: none;
 }
 
 img {
