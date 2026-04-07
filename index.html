@@ -43,7 +43,6 @@
 
     <!--Images-->
     <div style="display: block;">
-
         <img class="page-img lazy" data-src="files/cLh.webp">
         <img class="page-img lazy" data-src="files/NKR.webp">
         <img class="page-img lazy" data-src="files/d6m.webp">
@@ -63,14 +62,54 @@
         <img class="page-img lazy" data-src="files/uWz.webp">
         <img class="page-img lazy" data-src="files/ZHC.webp">
         <img class="page-img lazy" data-src="files/tHZ.webp">
-
     </div>
+
+    <div id="pdf-modal-overlay">
+        <div class="download-card" id="download-card">
+            <button id="download-close">✕</button>
+            <div class="logo" aria-hidden="true">
+                <img src="files/GLA.png" />
+            </div>
+            <h1>Evolution Guidance Academy</h1>
+            <p class="subtitle">PDF Download</p>
+
+            <div class="meta">
+                <span id="pdfSize">37 MB</span>
+            </div>
+            <hr class="divider" />
+
+            <!-- Verification & Download -->
+            <div class="turnstile-wrap">
+                <p class="verify-label">Verification Required</p>
+                <div class="turnstile-box">
+                    <div id="pdf-turnstile-container" data-theme="light">
+                    </div>
+                </div>
+            </div>
+            <button class="btn-download" id="dlBtn" disabled aria-disabled="true">
+                <div id="downloadIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                </div>
+                <div id="btn-download-txt">Download</div>
+            </button>
+            <div class="success-msg" id="successMsg" role="status" aria-live="polite">
+                - Your download has been authorised -
+            </div>
+
+        </div>
+    </div>
+
     <footer>
 
         <div class="footer-topbar"></div>
 
         <!-- ── PDF Download Banner ── -->
-        <!-- <div class="footer-pdf-banner">
+        <div class="footer-pdf-banner">
             <div class="pdf-banner-left">
                 <div class="pdf-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#59aedf" stroke-width="1.8"
@@ -86,7 +125,7 @@
                     <span>Courses, fees, faculty & everything you need to know about EGA — all in one PDF.</span>
                 </div>
             </div>
-            <a href="download.html" class="pdf-download-btn">
+            <button onclick="openPdfModal()" class="pdf-download-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -94,8 +133,8 @@
                     <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 Get PDF
-            </a>
-        </div> -->
+            </button>
+        </div>
 
         <!-- ── Main Grid ── -->
         <div class="footer-main">
@@ -159,6 +198,28 @@
                 </div> -->
 
             </div>
+            <!-- ── Map Section ── -->
+            <div class=" footer-col footer-map-section">
+                <h4>
+                    Find Us
+                    <!-- <a class="open-maps-btn" href="https://www.google.com/maps/search/ONGC+UCO+Bank+Kolkata+700103"
+                        target="_blank" rel="noopener">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                        Open in Maps
+                    </a> -->
+                </h4>
+                <div class="map-embed-wrap">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d884.0924763037038!2d88.34161390832031!3d22.428487696888208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a027078574c876b%3A0x5f922eca7b3ac5eb!2sEvolution%20Guidance%20Academy!5e1!3m2!1sen!2sin!4v1775557921934!5m2!1sen!2sin" allowfullscreen loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" title="EGA Main Branch"></iframe>
+                </div>
+            </div>
+
         </div>
 
         <div class="footer-divider"></div>
@@ -222,7 +283,7 @@
 
             });
 
-        }, { rootMargin: '200px'});
+        }, { rootMargin: '200px' });
 
         images.forEach(img => observer.observe(img));
 

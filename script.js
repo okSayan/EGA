@@ -254,7 +254,7 @@ function resetCard() {
   attachListeners();
 
   if (window.turnstile) {
-    turnstile.render('.cf-turnstile', {
+    turnstile.render('#survey-card .cf-turnstile', {
       sitekey: '0x4AAAAAACuyOXqycnJ5LVcZ'
     });
   }
@@ -267,3 +267,120 @@ tab.addEventListener('click', () => {
 });
 
 attachListeners();
+
+// ── PDF Modal ──
+const pdfOverlay = document.getElementById('pdf-modal-overlay');
+const dlBtn = document.getElementById('dlBtn');
+const btn_download_txt = document.getElementById('btn-download-txt');
+const downloadIcon = document.getElementById('downloadIcon');
+const successMsg = document.getElementById('successMsg');
+const WORKER_URL = 'https://ega2.bharatyudhishthir-509.workers.dev/get-pdf';
+
+let turnstileWidgetId = null;
+let cfToken = null;
+
+function openPdfModal() {
+  pdfOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Reset state every time
+  cfToken = null;
+  dlBtn.disabled = true;
+  dlBtn.setAttribute('aria-disabled', 'true');
+  successMsg.style.display = 'none';
+
+  // Wait for turnstile to be ready
+  const initTurnstile = () => {
+    if (window.turnstile) {
+      if (turnstileWidgetId !== null) {
+        turnstile.reset(turnstileWidgetId);
+      } else {
+        turnstileWidgetId = turnstile.render('#pdf-turnstile-container', {
+          sitekey: '0x4AAAAAAC02SPNUmLlPZdUS',
+          theme: 'light',
+          callback: function(token) {
+            // inline callback — no string, no timing issue
+            cfToken = token;
+            dlBtn.disabled = false;
+            dlBtn.setAttribute('aria-disabled', 'false');
+          },
+          'expired-callback': function() {
+            cfToken = null;
+            dlBtn.disabled = true;
+            dlBtn.setAttribute('aria-disabled', 'true');
+          }
+        });
+      }
+    } else {
+      // Turnstile not loaded yet, try again in 200ms
+      setTimeout(initTurnstile, 200);
+    }
+  };
+
+  initTurnstile();
+}
+
+// Close button
+document.getElementById('download-close').addEventListener('click', () => {
+  pdfOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+});
+
+// Click outside to close
+// pdfOverlay.addEventListener('click', (e) => {
+//   if (e.target === pdfOverlay) {
+//     pdfOverlay.classList.remove('open');
+//     document.body.style.overflow = '';
+//   }
+// });
+
+// Download button
+dlBtn.addEventListener('click', async () => {
+  if (!cfToken) return;
+
+  dlBtn.disabled = true;
+  btn_download_txt.textContent = 'Verifying...';
+  downloadIcon.hidden = true;
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: cfToken })
+    });
+
+    if (!response.ok) throw new Error('Failed');
+
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+
+    if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
+      window.open(blobUrl, '_blank');
+    } else {
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'EGA_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    URL.revokeObjectURL(blobUrl);
+    successMsg.style.display = 'block';
+    //autoclose
+    setTimeout(() => {
+      pdfOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }, 7000);
+
+  } catch (err) {
+    alert('Something went wrong. Please try again.');
+  } finally {
+    btn_download_txt.textContent = 'Download';
+    downloadIcon.hidden = false;
+    if(!successMsg.style.display || successMsg.style.display === 'none') {
+      dlBtn.disabled = false;
+      dlBtn.setAttribute('aria-disabled', 'false'); 
+    }
+  }
+});
