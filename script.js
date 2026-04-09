@@ -393,3 +393,20 @@ dlBtn.addEventListener('click', async () => {
     }
   }
 });
+
+/*enquire btn*/
+const footer = document.querySelector('footer'); 
+
+function checkFooterVisibility() {
+  const footerTop = footer.getBoundingClientRect().top;
+  const windowHeight = window.innerHeight;
+  const tabHeight = tab.offsetHeight + 30;
+
+  if (footerTop < windowHeight) {
+    const overLap = windowHeight - footerTop;
+    tab.style.bottom = (overLap + 10) + 'px';
+  }else{
+    tab.style.bottom = '30px';
+  }
+}
+window.addEventListener('scroll', checkFooterVisibility);
