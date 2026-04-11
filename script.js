@@ -44,7 +44,7 @@ async function logVisit() {
     const data = await res.json();
     if (data.success) visitorId = data.visitor_id;
   } catch {
-    console.log('Visit log failed');
+    // console.log('Visit log failed');
   }
 }
 
@@ -74,6 +74,18 @@ function goToStage(hideId, showId) {
 //s1
 async function handleInterest(choice) {
   if (choice === 'yes') {
+    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Secret-Token': SECRET
+      },
+      body: JSON.stringify({
+        visitor_id: visitorId,
+        interest: 'yes',
+        time_spent: getTimeSpent()
+      })
+    });
     goToStage('stage-1', 'stage-2');
   } else if (choice === 'no') {
     await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
@@ -126,9 +138,21 @@ function showThankYou(emoji, heading, message) {
 }
 //set listeners
 function attachListeners() {
-  document.getElementById('survey-close').addEventListener('click', () => {
+  document.getElementById('survey-close').addEventListener('click', async () => {
     card.classList.remove('show');
     tab.style.display = 'block';
+    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Secret-Token': SECRET
+      },
+      body: JSON.stringify({
+        visitor_id: visitorId,
+        interest: 'closed',
+        time_spent: getTimeSpent()
+      })
+    });
   });
 
   document.getElementById('survey-submit').addEventListener('click', async () => {
@@ -372,12 +396,24 @@ dlBtn.addEventListener('click', async () => {
     URL.revokeObjectURL(blobUrl);
     successMsg.style.display = 'block';
 
-    fetch('https://ega2.bharatyudhishthir-509.workers.dev/log-download', {
+    // fetch('https://ega2.bharatyudhishthir-509.workers.dev/log-download', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     device_type: getDeviceType(),
+    //     timestamp: getLocalTimestamp()
+    //   })
+    // }).catch(() => { });
+
+    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/log-download', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Secret-Token': SECRET
+      },
       body: JSON.stringify({
-        device_type: getDeviceType(),
-        timestamp: getLocalTimestamp()
+        visitor_id: visitorId,
+        time_spent: getTimeSpent()
       })
     }).catch(() => { });
     //autoclose
