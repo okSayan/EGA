@@ -70,6 +70,9 @@ function goToStage(hideId, showId) {
   const next = document.getElementById(showId);
   next.classList.remove('hidden');
   next.classList.add('stage-enter');
+  document.getElementById('survey-close').classList.add('hidden');
+  document.getElementById('survey-close2').classList.remove('hidden');
+
 }
 //s1
 async function handleInterest(choice) {
@@ -153,6 +156,11 @@ function attachListeners() {
         time_spent: getTimeSpent()
       })
     });
+  });
+
+    document.getElementById('survey-close2').addEventListener('click', async () => {
+    card.classList.remove('show');
+    tab.style.display = 'block';
   });
 
   document.getElementById('survey-submit').addEventListener('click', async () => {
@@ -254,6 +262,8 @@ function setupEnterKey() {
 function resetCard() {
   card.innerHTML = `
             <button id="survey-close">✕</button>
+        <button id="survey-close2" class="hidden">✕</button>
+
         <div id="stage-1">
             <h3>Interested in our courses?</h3>
             <div id="stage-1-buttons">
@@ -262,7 +272,7 @@ function resetCard() {
                 <button class="choice-btn may-btn" onclick="handleInterest('maybe')">Will Think...</button>
             </div>
         </div>
-        <div id="stage-2" class="hidden">
+        <div id="stage-2" class="hidden survey-card">
             <h3>Great! Tell us about Yourself</h3>
             <input type="text" id="s-name" placeholder="Your Name" autocapitalize="words" autocomplete="name"
                 autocorrect="off" />

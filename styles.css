@@ -198,7 +198,7 @@ img {
   background: #47a1f5;
 }
 
-#survey-close {
+#survey-close, #survey-close2 {
   position: absolute;
   top: 12px;
   right: 14px;

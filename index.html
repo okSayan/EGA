@@ -8,13 +8,14 @@
     <link href="styles.css" rel="stylesheet">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <link rel="icon" type="image/x-icon" href="files/GLA.webp">
-
 </head>
 
 <body>
     <!-- Survey Card -->
     <div id="survey-card">
         <button id="survey-close">✕</button>
+        <button id="survey-close2" class="hidden">✕</button>
+
         <div id="stage-1">
             <h3>Interested in our courses?</h3>
             <div id="stage-1-buttons">
@@ -23,7 +24,7 @@
                 <button class="choice-btn may-btn" onclick="handleInterest('maybe')">Will Think...</button>
             </div>
         </div>
-        <div id="stage-2" class="hidden">
+        <div id="stage-2" class="hidden survey-card">
             <h3>Great! Tell us about Yourself</h3>
             <input type="text" id="s-name" placeholder="Your Name" autocapitalize="words" autocomplete="name"
                 autocorrect="off" />
