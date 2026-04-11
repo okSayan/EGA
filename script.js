@@ -124,20 +124,6 @@ function showThankYou(emoji, heading, message) {
     tab.style.display = 'block';
   }, 3000);
 }
-
-document.getElementById('s-phone').addEventListener('input', (e) => {
-  let val = e.target.value.replace(/\D/g, ""); // Digits only
-  
-  if (val.length>10 && val.startsWith("91")) {
-    val = val.substring(2);
-  }
-  if (val.length>10 && val.startsWith("0")) {
-    val = val.substring(1);
-  }
-  
-  e.target.value = val.substring(0, 10); // Max 10 digits
-});
-
 //set listeners
 function attachListeners() {
   document.getElementById('survey-close').addEventListener('click', () => {
@@ -153,8 +139,8 @@ function attachListeners() {
 
     const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
 
-    if (!name) {
-      alert('Please fill in your Name!');
+    if (!name || !phone) {
+      alert('Please fill in your Name and Phone Number!');
       return;
     }
 
@@ -243,27 +229,31 @@ function setupEnterKey() {
 
 function resetCard() {
   card.innerHTML = `
-    <button id="survey-close">✕</button>
-    <div id="stage-1">
-      <h3>Interested in our courses?</h3>
-      <div id="stage-1-buttons">
-        <button class="choice-btn yes-btn" onclick="handleInterest('yes')">Yes!</button>
-        <button class="choice-btn no-btn"  onclick="handleInterest('no')">No.</button>
-        <button class="choice-btn may-btn" onclick="handleInterest('maybe')">Will Think...</button>
-      </div>
-    </div>
-    <div id="stage-2" class="hidden">
-      <h3>Great! Tell us about Yourself</h3>
-      <input type="text" id="s-name" placeholder="Your Name" />
-      <input type="text" id="i-name" placeholder="Your School/College name" />
-      <input type="text" id="c-name" placeholder="Interested Subject/Course" />
-      <input type="tel"  id="s-phone" placeholder="Phone Number" />
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAACuyO4itcnJ5LVcZ"></div>
-      <button id="survey-submit">Get Callback →</button>
-    </div>
-    <div id="stage-3" class="hidden">
-      <div id="thankyou-content"></div>
-    </div>
+            <button id="survey-close">✕</button>
+        <div id="stage-1">
+            <h3>Interested in our courses?</h3>
+            <div id="stage-1-buttons">
+                <button class="choice-btn yes-btn" onclick="handleInterest('yes')">Yes!</button>
+                <button class="choice-btn no-btn" onclick="handleInterest('no')">No.</button>
+                <button class="choice-btn may-btn" onclick="handleInterest('maybe')">Will Think...</button>
+            </div>
+        </div>
+        <div id="stage-2" class="hidden">
+            <h3>Great! Tell us about Yourself</h3>
+            <input type="text" id="s-name" placeholder="Your Name" autocapitalize="words" autocomplete="name"
+                autocorrect="off" />
+            <input type="text" id="i-name" placeholder="Your School/College name" autocapitalize="words" />
+            <input type="text" id="c-name" placeholder="Interested Subject/Course" autocapitalize="words" />
+            <div class="phone-input-tab">
+                <span id="country-code">+91</span>
+                <input type="tel" id="s-phone" placeholder="Phone Number" autocomplete="tel" />
+            </div>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAACuyOXqycnJ5LVcZ"></div>
+            <button id="survey-submit">Get Callback →</button>
+        </div>
+        <div id="stage-3" class="hidden">
+            <div id="thankyou-content"></div>
+        </div>
   `;
   attachListeners();
 
@@ -406,6 +396,19 @@ dlBtn.addEventListener('click', async () => {
       dlBtn.setAttribute('aria-disabled', 'false');
     }
   }
+});
+
+document.getElementById('s-phone').addEventListener('input', (e) => {
+  let val = e.target.value.replace(/\D/g, ""); // Digits only
+
+  if (val.length > 10 && val.startsWith("91")) {
+    val = val.substring(2);
+  }
+  if (val.length > 10 && val.startsWith("0")) {
+    val = val.substring(1);
+  }
+
+  e.target.value = val.substring(0, 10); // Max 10 digits
 });
 
 /*enquire btn*/
