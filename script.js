@@ -48,7 +48,7 @@ async function logVisit() {
   }
 }
 
-// logVisit();
+logVisit();
 //show card
 if (sessionStorage.getItem('survey-dismissed')) { shown = true; }
 
