@@ -48,7 +48,7 @@ async function logVisit() {
   }
 }
 
-logVisit();
+// logVisit();
 //show card
 if (sessionStorage.getItem('survey-dismissed')) { shown = true; }
 
@@ -124,6 +124,20 @@ function showThankYou(emoji, heading, message) {
     tab.style.display = 'block';
   }, 3000);
 }
+
+document.getElementById('s-phone').addEventListener('input', (e) => {
+  let val = e.target.value.replace(/\D/g, ""); // Digits only
+  
+  if (val.length>10 && val.startsWith("91")) {
+    val = val.substring(2);
+  }
+  if (val.length>10 && val.startsWith("0")) {
+    val = val.substring(1);
+  }
+  
+  e.target.value = val.substring(0, 10); // Max 10 digits
+});
+
 //set listeners
 function attachListeners() {
   document.getElementById('survey-close').addEventListener('click', () => {
@@ -139,8 +153,8 @@ function attachListeners() {
 
     const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
 
-    if (!name || !phone) {
-      alert('Please fill in your Name & Phone!');
+    if (!name) {
+      alert('Please fill in your Name!');
       return;
     }
 
@@ -298,13 +312,13 @@ function openPdfModal() {
         turnstileWidgetId = turnstile.render('#pdf-turnstile-container', {
           sitekey: '0x4AAAAAAC02SPNUmLlPZdUS',
           theme: 'light',
-          callback: function(token) {
+          callback: function (token) {
             // inline callback — no string, no timing issue
             cfToken = token;
             dlBtn.disabled = false;
             dlBtn.setAttribute('aria-disabled', 'false');
           },
-          'expired-callback': function() {
+          'expired-callback': function () {
             cfToken = null;
             dlBtn.disabled = true;
             dlBtn.setAttribute('aria-disabled', 'true');
@@ -357,12 +371,12 @@ dlBtn.addEventListener('click', async () => {
     // if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
     //   window.open(blobUrl, '_blank');
     // } else {
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = 'EGA_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = 'EGA_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     // }
 
     URL.revokeObjectURL(blobUrl);
@@ -370,12 +384,12 @@ dlBtn.addEventListener('click', async () => {
 
     fetch('https://ega2.bharatyudhishthir-509.workers.dev/log-download', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         device_type: getDeviceType(),
         timestamp: getLocalTimestamp()
       })
-    }).catch(() => {});
+    }).catch(() => { });
     //autoclose
     setTimeout(() => {
       pdfOverlay.classList.remove('open');
@@ -387,15 +401,15 @@ dlBtn.addEventListener('click', async () => {
   } finally {
     btn_download_txt.textContent = 'Download';
     downloadIcon.hidden = false;
-    if(!successMsg.style.display || successMsg.style.display === 'none') {
+    if (!successMsg.style.display || successMsg.style.display === 'none') {
       dlBtn.disabled = false;
-      dlBtn.setAttribute('aria-disabled', 'false'); 
+      dlBtn.setAttribute('aria-disabled', 'false');
     }
   }
 });
 
 /*enquire btn*/
-const footer = document.querySelector('footer'); 
+const footer = document.querySelector('footer');
 
 function checkFooterVisibility() {
   const footerTop = footer.getBoundingClientRect().top;
@@ -405,7 +419,7 @@ function checkFooterVisibility() {
   if (footerTop < windowHeight) {
     const overLap = windowHeight - footerTop;
     tab.style.bottom = (overLap + 10) + 'px';
-  }else{
+  } else {
     tab.style.bottom = '30px';
   }
 }
