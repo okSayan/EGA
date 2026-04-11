@@ -92,6 +92,7 @@ async function handleInterest(choice) {
       keepalive: true
     });
   } else if (choice === 'no') {
+    showThankYou("No worries!", "Thanks for stopping by!", "");
     await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
       headers: {
@@ -102,10 +103,11 @@ async function handleInterest(choice) {
         visitor_id: visitorId,
         interest: 'no',
         time_spent: getTimeSpent()
-      })
+      }),
+      keepalive: true
     });
-    showThankYou("No worries!", "Thanks for stopping by!", "");
   } else if (choice === 'maybe') {
+    showThankYou("Take your time!", "We're here whenever you're ready!", "");
     await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
       headers: {
@@ -116,9 +118,9 @@ async function handleInterest(choice) {
         visitor_id: visitorId,
         interest: 'maybe',
         time_spent: getTimeSpent()
-      })
+      }),
+      keepalive: true
     });
-    showThankYou("Take your time!", "We're here whenever you're ready!", "");
   }
 }
 //s3
@@ -155,7 +157,8 @@ function attachListeners() {
         visitor_id: visitorId,
         interest: 'closed',
         time_spent: getTimeSpent()
-      })
+      }),
+      keepalive: true
     });
   });
 
