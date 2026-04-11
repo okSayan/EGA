@@ -77,6 +77,7 @@ function goToStage(hideId, showId) {
 //s1
 async function handleInterest(choice) {
   if (choice === 'yes') {
+    goToStage('stage-1', 'stage-2');
     await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
       headers: {
@@ -87,9 +88,9 @@ async function handleInterest(choice) {
         visitor_id: visitorId,
         interest: 'yes',
         time_spent: getTimeSpent()
-      })
+      }),
+      keepalive: true
     });
-    goToStage('stage-1', 'stage-2');
   } else if (choice === 'no') {
     await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
@@ -158,7 +159,7 @@ function attachListeners() {
     });
   });
 
-    document.getElementById('survey-close2').addEventListener('click', async () => {
+  document.getElementById('survey-close2').addEventListener('click', async () => {
     card.classList.remove('show');
     tab.style.display = 'block';
   });
