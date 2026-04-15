@@ -477,61 +477,57 @@ function checkFooterVisibility() {
 }
 window.addEventListener('scroll', checkFooterVisibility);
 
+/*Festivals Popup*/
+const popup = document.getElementById("posterPopup");
 
-document.addEventListener("DOMContentLoaded", function () {
+function openPopup() {
+  popup.style.display = "block";
+  popup.classList.remove("show");
+  void popup.offsetWidth;
+  popup.classList.add("show");
 
-    const popup = document.getElementById("posterPopup");
+  popup.autoCloseTimer = setTimeout(closePopup, 6000);
+}
 
-    function openPopup() {
-        popup.style.display = "block";
-        popup.classList.remove("show");
-        void popup.offsetWidth;
-        popup.classList.add("show");
+function closePopup() {
+  popup.classList.remove("show");
+  popup.classList.add("hide");
 
-        popup.autoCloseTimer = setTimeout(closePopup, 6000);
-    }
+  clearTimeout(popup.autoCloseTimer);
 
-    function closePopup() {
-        popup.classList.remove("show");
-        popup.classList.add("hide");
+  setTimeout(() => {
+    popup.style.display = "none";
+    popup.classList.remove("hide");
+  }, 300);
+}
 
-        clearTimeout(popup.autoCloseTimer);
+window.closePopup = closePopup;
 
-        setTimeout(() => {
-            popup.style.display = "none";
-            popup.classList.remove("hide");
-        }, 300);
-    }
-
-    window.closePopup = closePopup;
-
-    popup.addEventListener("click", function (e) {
-        if (e.target === popup) closePopup();
-    });
-
-    document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") closePopup();
-    });
-
-    fetch("files/festivals.json")
-        .then(response => response.json())
-        .then(data => {
-            let today = new Date();
-            let day = today.getDate();
-            let month = today.getMonth() + 1;
-
-            const festival = data.find(f =>
-                Number(f.day) === day && Number(f.month) === month
-            );
-
-            if (festival) {
-                document.getElementById("festivalImage").src = festival.image;
-                document.getElementById("festive-header").textContent = festival.header;
-                document.getElementById("festive-desc").textContent = festival.desc;
-
-                openPopup();
-            }
-        })
-        .catch(err => console.error("Error loading festivals:", err));
-
+popup.addEventListener("click", function (e) {
+  if (e.target === popup) closePopup();
 });
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") closePopup();
+});
+
+fetch("files/festivals.json")
+  .then(response => response.json())
+  .then(data => {
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() + 1;
+
+    const festival = data.find(f =>
+      Number(f.day) === day && Number(f.month) === month
+    );
+
+    if (festival) {
+      document.getElementById("festivalImage").src = festival.image;
+      document.getElementById("festive-header").textContent = festival.header;
+      document.getElementById("festive-desc").textContent = festival.desc;
+
+      openPopup();
+    }
+  })
+  .catch(err => console.error("Error loading festivals:", err));
