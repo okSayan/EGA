@@ -48,7 +48,7 @@ async function logVisit() {
   }
 }
 
-logVisit();
+// logVisit();
 //show card
 if (sessionStorage.getItem('survey-dismissed')) { shown = true; }
 
@@ -310,7 +310,6 @@ tab.addEventListener('click', () => {
 
 attachListeners();
 
-// ── PDF Modal ──
 const pdfOverlay = document.getElementById('pdf-modal-overlay');
 const dlBtn = document.getElementById('dlBtn');
 const btn_download_txt = document.getElementById('btn-download-txt');
@@ -368,7 +367,7 @@ document.getElementById('download-close').addEventListener('click', () => {
   document.body.style.overflow = '';
 });
 
-// Click outside to close
+
 // pdfOverlay.addEventListener('click', (e) => {
 //   if (e.target === pdfOverlay) {
 //     pdfOverlay.classList.remove('open');
@@ -477,3 +476,62 @@ function checkFooterVisibility() {
   }
 }
 window.addEventListener('scroll', checkFooterVisibility);
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const popup = document.getElementById("posterPopup");
+
+    function openPopup() {
+        popup.style.display = "block";
+        popup.classList.remove("show");
+        void popup.offsetWidth;
+        popup.classList.add("show");
+
+        popup.autoCloseTimer = setTimeout(closePopup, 6000);
+    }
+
+    function closePopup() {
+        popup.classList.remove("show");
+        popup.classList.add("hide");
+
+        clearTimeout(popup.autoCloseTimer);
+
+        setTimeout(() => {
+            popup.style.display = "none";
+            popup.classList.remove("hide");
+        }, 300);
+    }
+
+    window.closePopup = closePopup;
+
+    popup.addEventListener("click", function (e) {
+        if (e.target === popup) closePopup();
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closePopup();
+    });
+
+    fetch("files/festivals.json")
+        .then(response => response.json())
+        .then(data => {
+            let today = new Date();
+            let day = today.getDate();
+            let month = today.getMonth() + 1;
+
+            const festival = data.find(f =>
+                Number(f.day) === day && Number(f.month) === month
+            );
+
+            if (festival) {
+                document.getElementById("festivalImage").src = festival.image;
+                document.getElementById("festive-header").textContent = festival.header;
+                document.getElementById("festive-desc").textContent = festival.desc;
+
+                openPopup();
+            }
+        })
+        .catch(err => console.error("Error loading festivals:", err));
+
+});
