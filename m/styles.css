@@ -240,8 +240,8 @@ img {
 
 /*new*/
 footer {
-  background: #1a3447;
-  color: #a8c4d4;
+  background: #3d0602;
+  color: #d38d0c;
   font-size: .85rem;
   line-height: 1.7;
   position: relative;
@@ -261,7 +261,7 @@ footer::before {
 /* Top accent line */
 .footer-topbar {
   height: 3px;
-  background: linear-gradient(to right, #234457, #59aedf, #2e8cb8, #234457);
+  background: linear-gradient(to right, #572323, #df5959, #b82e2e, #572323);
 }
 
 /* ── PDF Banner ── */
@@ -346,14 +346,14 @@ footer::before {
 .footer-brand .brand-name {
   font-family: 'Playfair Display', serif;
   font-size: 1.25rem;
-  color: #ddeef6;
+  color: #ff5100;
   margin-bottom: .25rem;
   letter-spacing: .02em;
 }
 
 .footer-brand .brand-tagline {
   font-size: .75rem;
-  color: #59aedf;
+  color: #eb910b;
   letter-spacing: .15em;
   text-transform: uppercase;
   margin-bottom: 1rem;
@@ -376,7 +376,7 @@ footer::before {
   border-radius: 20px;
   padding: .35rem .9rem;
   font-size: .7rem;
-  color: #59aedf;
+  color: #d0bce4;
   letter-spacing: .1em;
 }
 
@@ -384,7 +384,7 @@ footer::before {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #6fdf59;
+  background: #5988df;
   animation: pulse 2s infinite;
 }
 
@@ -406,10 +406,10 @@ footer::before {
   font-weight: 600;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: #59aedf;
+  color: #dfa959;
   margin-bottom: 1rem;
   padding-bottom: .5rem;
-  border-bottom: 1px solid rgba(89, 174, 223, 0.15);
+  border-bottom: 1px solid rgba(223, 89, 89, 0.15);
 }
 
 .footer-col ul {
@@ -452,7 +452,7 @@ footer::before {
 .contact-icon {
   width: 28px;
   height: 28px;
-  background: rgba(89, 174, 223, 0.1);
+  background: rgba(253, 165, 0, 0.1);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -462,18 +462,18 @@ footer::before {
 }
 
 .contact-icon svg {
-  color: #59aedf;
+  color: #fdfdfd;
 }
 
 .contact-text {
   font-size: .78rem;
-  color: #7a9fb5;
+  color: #d38d0c;
   line-height: 1.5;
 }
 
 .contact-text strong {
   display: block;
-  color: #a8c4d4;
+  color: #ffdb99;
   font-size: .7rem;
   text-transform: uppercase;
   letter-spacing: .1em;
@@ -486,7 +486,7 @@ footer::before {
   margin: 0 auto;
   height: 1px;
   margin-top: 95px;
-  background: linear-gradient(to right, transparent, rgba(89, 174, 223, 0.2), transparent);
+  background: linear-gradient(to right, transparent, rgba(223, 89, 89, 0.2), transparent);
 }
 
 /* ── Bottom bar ── */
@@ -503,12 +503,12 @@ footer::before {
 
 .footer-bottom .copyright {
   font-size: .72rem;
-  color: #4d7a94;
+  color: #ca8db8;
   line-height: 1.6;
 }
 
 .footer-bottom .copyright strong {
-  color: #6a9ab5;
+  color: #ca82b5;
 }
 
 .footer-bottom .legal-links {
@@ -530,14 +530,14 @@ footer::before {
 
 .footer-bottom .made-by {
   font-size: .7rem;
-  color: #3d6278;
+  color: #a9eb0ff1;
   display: flex;
   align-items: center;
   gap: .3rem;
 }
 
 .made-by span {
-  color: #59aedf;
+  color: #ebdd1e;
 }
 
 /* ── Responsive ── */
@@ -614,7 +614,7 @@ footer::before {
   font-weight: 600;
   font-size: 0.7rem;
   color: transparent;
-  background: linear-gradient(135deg, #7ecfed 0%, #ffffff 40%, #59aedf 70%, #2e8cb8 100%);
+  background: linear-gradient(135deg, #7ecfed 0%, #ffffff 40%, #df59b2 70%, #33f30d 100%);
   -webkit-background-clip: text;
   background-clip: text;
   display: inline-block;
@@ -671,7 +671,7 @@ footer::before {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #59aedf;
+  background: #4cfc06;
   opacity: 0;
 }
 
@@ -687,7 +687,7 @@ footer::before {
   animation: floatP 2s ease 2.5s infinite;
   width: 2px;
   height: 2px;
-  background: #7ecfed;
+  background: #f7e602;
 }
 
 .p:nth-child(3) {
@@ -1103,10 +1103,10 @@ h1 {
   font-weight: 600;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: #59aedf;
+  color: #dfa959;
   margin-bottom: 1rem;
   padding-bottom: .5rem;
-  border-bottom: 1px solid rgba(89, 174, 223, 0.15);
+  border-bottom: 1px solid rgba(223, 89, 89, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
