@@ -52,7 +52,7 @@ body {
   transition: opacity .4s ease, filter .4s ease;
 }
 
-.page-img:last-child(){
+.page-img:last-child{
   border-bottom: none;
 }
 
