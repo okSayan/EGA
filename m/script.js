@@ -277,6 +277,7 @@ function resetCard() {
             </div>
         </div>
         <div id="stage-2" class="hidden survey-card">
+            <h3>Great! Connect with us</h3>
             <input type="text" id="s-name" placeholder="Your Name" autocapitalize="words" autocomplete="name"
                 autocorrect="off" />
             <input type="text" id="i-name" placeholder="Company Name" autocapitalize="words" />
