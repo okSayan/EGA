@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolution Guidance Academy</title>
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <link rel="icon" type="image/x-icon" href="files/GLA.webp">
+</head>
+
+<body>
+    <div id="posterPopup">
+        <div class="popup-content">
+            <p id="festive-header"></p>
+            <button class="closeBtn" onclick="closePopup()">x</button>
+            <img id="festivalImage" src="" alt="Poster">
+            <p id="festive-desc"></p>
+        </div>
+    </div>
+    <div id="survey-card">
+        <button id="survey-close">✕</button>
+        <button id="survey-close2" class="hidden">✕</button>
+
+        <div id="stage-1">
+            <h3>Interested in our courses?</h3>
+            <div id="stage-1-buttons">
+                <button class="choice-btn yes-btn" onclick="handleInterest('yes')">Yes!</button>
+                <button class="choice-btn no-btn" onclick="handleInterest('no')">No.</button>
+                <button class="choice-btn may-btn" onclick="handleInterest('maybe')">Will Think...</button>
+            </div>
+        </div>
+        <div id="stage-2" class="hidden survey-card">
+            <h3>Great! Tell us about Yourself</h3>
+            <input type="text" id="s-name" placeholder="Your Name" autocapitalize="words" autocomplete="name"
+                autocorrect="off" />
+            <input type="text" id="i-name" placeholder="Your School/College name" autocapitalize="words" />
+            <input type="text" id="c-name" placeholder="Interested Subject/Course" autocapitalize="words" />
+            <div class="phone-input-tab">
+                <span id="country-code">+91</span>
+                <input type="tel" id="s-phone" placeholder="Phone Number" autocomplete="tel" />
+            </div>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAACuyOXqycnJ5LVcZ"></div>
+            <button id="survey-submit">Get Callback →</button>
+        </div>
+        <div id="stage-3" class="hidden">
+            <div id="thankyou-content"></div>
+        </div>
+
+    </div>
+
+    <div id="survey-tab">Enquire</div>
+
+    <!--Images-->
+    <div style="display: block;">
+        <img class="page-img lazy" data-src="files/cLh.webp">
+        <img class="page-img lazy" data-src="files/NKR.webp">
+        <img class="page-img lazy" data-src="files/d6m.webp">
+        <img class="page-img lazy" data-src="files/GBC.webp">
+        <img class="page-img lazy" data-src="files/Rd7.webp">
+        <img class="page-img lazy" data-src="files/wsm.webp">
+        <img class="page-img lazy" data-src="files/881.webp">
+        <img class="page-img lazy" data-src="files/XXW.webp">
+        <img class="page-img lazy" data-src="files/R3j.webp">
+        <img class="page-img lazy" data-src="files/cDS.webp">
+        <img class="page-img lazy" data-src="files/JuR.webp">
+        <img class="page-img lazy" data-src="files/761.webp">
+        <img class="page-img lazy" data-src="files/dEQ.webp">
+        <img class="page-img lazy" data-src="files/yJ9.webp">
+        <img class="page-img lazy" data-src="files/BjC.webp">
+        <img class="page-img lazy" data-src="files/4MJ.webp">
+        <img class="page-img lazy" data-src="files/uWz.webp">
+        <img class="page-img lazy" data-src="files/ZHC.webp">
+        <img class="page-img lazy" data-src="files/tHZ.webp">
+        <img class="page-img lazy" data-src="files/bpa.webp">
+        <img class="page-img lazy" data-src="files/A11.webp">
+    </div>
+
+    <div id="pdf-modal-overlay">
+        <div class="download-card" id="download-card">
+            <button id="download-close">✕</button>
+            <div class="logo" aria-hidden="true">
+                <img src="files/GLA.png" />
+            </div>
+            <h1>Evolution Guidance Academy</h1>
+            <p class="subtitle">PDF Download</p>
+
+            <div class="meta">
+                <span id="pdfSize">10.8 MB</span>
+            </div>
+            <hr class="divider" />
+
+            <!-- Verification & Download -->
+            <div class="turnstile-wrap">
+                <p class="verify-label">Verification Required</p>
+                <div class="turnstile-box">
+                    <div id="pdf-turnstile-container" data-theme="light">
+                    </div>
+                </div>
+            </div>
+            <button class="btn-download" id="dlBtn" disabled aria-disabled="true">
+                <div id="downloadIcon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                </div>
+                <div id="btn-download-txt">Download</div>
+            </button>
+            <div class="success-msg" id="successMsg" role="status" aria-live="polite">
+                - Your download has been authorised -
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+
+        <div class="footer-topbar"></div>
+
+        <!-- ── PDF Download Banner ── -->
+        <div class="footer-pdf-banner">
+            <div class="pdf-banner-left">
+                <div class="pdf-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#59aedf" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="12" y1="18" x2="12" y2="12" />
+                        <polyline points="9 15 12 18 15 15" />
+                    </svg>
+                </div>
+                <div class="pdf-banner-text">
+                    <strong>Download Our Full Prospectus</strong>
+                    <span>Courses, fees, faculty & everything you need to know about EGA — all in one PDF.</span>
+                </div>
+            </div>
+            <button onclick="openPdfModal()" class="pdf-download-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Get PDF
+            </button>
+        </div>
+
+        <!-- ── Main Grid ── -->
+        <div class="footer-main">
+
+            <!-- Brand -->
+            <div class="footer-brand footer-col">
+                <div class="brand-name">Evolution Guidance Academy</div>
+                <div class="brand-tagline">Where Knowledge is Free</div>
+                <p></p>
+                <div class="brand-badge">
+                    <span class="badge-dot"></span>
+                    Admissions Open 2026
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="footer-col footer-contact">
+                <h4>Contact Us</h4>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    </div>
+                    <div class="contact-text">
+                        <strong>Address</strong>
+                        ONGC near UCO Bank, Kolkata - 700103
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.71 3.42 2 2 0 0 1 3.68 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l1.08-1.08a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z" />
+                        </svg>
+                    </div>
+                    <a href="tel:+919007668615" style="color: inherit; text-decoration: none;" class="contact-text">
+                        <strong>Phone</strong>
+                        +91 9007668615
+                    </a>
+                </div>
+
+
+                <!-- <div class="contact-item">
+                    <div class="contact-icon">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                    </div>
+                    <div class="contact-text">
+                        <strong>Email</strong>
+                        info@evolutionguidance.in
+                    </div>
+                </div> -->
+
+            </div>
+            <!-- ── Map Section ── -->
+            <div class="footer-col footer-map-section">
+                <h4>
+                    Find Us
+                    <!-- <a class="open-maps-btn" href="https://www.google.com/maps/search/ONGC+UCO+Bank+Kolkata+700103"
+                        target="_blank" rel="noopener">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                        Open in Maps
+                    </a> -->
+                </h4>
+                <div class="map-embed-wrap">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d884.0924763037038!2d88.34161390832031!3d22.428487696888208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a027078574c876b%3A0x5f922eca7b3ac5eb!2sEvolution%20Guidance%20Academy!5e1!3m2!1sen!2sin!4v1775557921934!5m2!1sen!2sin"
+                        allowfullscreen loading="" referrerpolicy="no-referrer-when-downgrade"
+                        title="EGA Main Branch"></iframe>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <!-- ── Bottom Bar ── */-->
+        <div class="footer-bottom">
+            <div class="copyright">
+                <strong>© 2026 Evolution Guidance Academy (EGA).</strong> All rights reserved.<br>
+            </div>
+            <div class="made-by">
+                Designed, built &amp; maintained with <span>♥</span> for EGA by
+                <div class="credit-wrap">
+                    <div class="name-wrap">
+                        <div class="name-glow"></div>
+                        <div class="particles">
+                            <div class="p"></div>
+                            <div class="p"></div>
+                            <div class="p"></div>
+                            <div class="p"></div>
+                            <div class="p"></div>
+                            <div class="p"></div>
+                            <div class="p"></div>
+                            <div class="p"></div>
+                        </div>
+                        <span class="letter">Sayan Bar</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+    <script>
+
+        document.addEventListener("contextmenu", event => event.preventDefault());
+
+        const images = document.querySelectorAll(".lazy");
+
+        const observer = new IntersectionObserver(entries => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    const img = entry.target;
+                    const src = img.dataset.src;
+
+                    img.src = src;
+
+                    img.onload = () => {
+                        img.classList.add("loaded");
+                    };
+
+                    img.onerror = () => {
+                        img.classList.add("loaded");
+                    };
+
+                    observer.unobserve(img);
+
+                }
+
+            });
+
+        }, { rootMargin: '200px' });
+
+        images.forEach(img => observer.observe(img));
+
+    </script>
+
+    <script src="https://cdn.counter.dev/script.js" data-id="65907582-c48c-4edb-867e-8134a7c446e5"
+        data-utcoffset="6"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7N0QQG60R4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-7N0QQG60R4');
+    </script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const source = params.get("ok") || params.get("ok");
+
+        if (source) {
+            gtag('event', 'qr_scan', {
+                qr_location: source
+            });
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
