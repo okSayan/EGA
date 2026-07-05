@@ -2,7 +2,7 @@ const card = document.getElementById('survey-card');
 const tab = document.getElementById('survey-tab');
 let shown = false;
 let visitorId = null;
-const SECRET = '';
+const SECRET = 'oidsDFEEasdHG82900=%sA';
 const pageLoadTime = Date.now();
 
 function getDeviceType() {
@@ -28,7 +28,7 @@ function getLocalTimestamp() {
 
 async function logVisit() {
   try {
-    const res = await fetch('https://ega2.bharatyudhishthir-509.workers.dev/visit', {
+    const res = await fetch('https://egam.bharatyudhishthir-509.workers.dev/visit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ function goToStage(hideId, showId) {
 async function handleInterest(choice) {
   if (choice === 'yes') {
     goToStage('stage-1', 'stage-2');
-    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
+    await fetch('https://egam.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ async function handleInterest(choice) {
     });
   } else if (choice === 'no') {
     showThankYou("No worries!", "Thanks for stopping by!", "");
-    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
+    await fetch('https://egam.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ async function handleInterest(choice) {
     });
   } else if (choice === 'maybe') {
     showThankYou("Take your time!", "We're here whenever you're ready!", "");
-    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
+    await fetch('https://egam.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ function attachListeners() {
   document.getElementById('survey-close').addEventListener('click', async () => {
     card.classList.remove('show');
     tab.style.display = 'block';
-    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/interest', {
+    await fetch('https://egam.bharatyudhishthir-509.workers.dev/interest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ function attachListeners() {
     }
 
     try {
-      const res = await fetch('https://ega2.bharatyudhishthir-509.workers.dev/lead', {
+      const res = await fetch('https://egam.bharatyudhishthir-509.workers.dev/lead', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -297,7 +297,7 @@ function resetCard() {
 
   if (window.turnstile) {
     turnstile.render('#survey-card .cf-turnstile', {
-      sitekey: '0x4AAAAAACuyOXqycnJ5LVcZ'
+      sitekey: '0x4AAAAAADwEj5fheulAht2j'
     });
   }
 }
@@ -315,57 +315,57 @@ const dlBtn = document.getElementById('dlBtn');
 const btn_download_txt = document.getElementById('btn-download-txt');
 const downloadIcon = document.getElementById('downloadIcon');
 const successMsg = document.getElementById('successMsg');
-const WORKER_URL = 'https://ega2.bharatyudhishthir-509.workers.dev/get-pdf';
+const WORKER_URL = 'https://egam.bharatyudhishthir-509.workers.dev/get-pdf';
 
 let turnstileWidgetId = null;
 let cfToken = null;
 
-function openPdfModal() {
-  pdfOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+// function openPdfModal() {
+//   pdfOverlay.classList.add('open');
+//   document.body.style.overflow = 'hidden';
 
-  // Reset state every time
-  cfToken = null;
-  dlBtn.disabled = true;
-  dlBtn.setAttribute('aria-disabled', 'true');
-  successMsg.style.display = 'none';
+//   // Reset state every time
+//   cfToken = null;
+//   dlBtn.disabled = true;
+//   dlBtn.setAttribute('aria-disabled', 'true');
+//   successMsg.style.display = 'none';
 
-  // Wait for turnstile to be ready
-  const initTurnstile = () => {
-    if (window.turnstile) {
-      if (turnstileWidgetId !== null) {
-        turnstile.reset(turnstileWidgetId);
-      } else {
-        turnstileWidgetId = turnstile.render('#pdf-turnstile-container', {
-          sitekey: '0x4AAAAAAC02SPNUmLlPZdUS',
-          theme: 'light',
-          callback: function (token) {
-            // inline callback — no string, no timing issue
-            cfToken = token;
-            dlBtn.disabled = false;
-            dlBtn.setAttribute('aria-disabled', 'false');
-          },
-          'expired-callback': function () {
-            cfToken = null;
-            dlBtn.disabled = true;
-            dlBtn.setAttribute('aria-disabled', 'true');
-          }
-        });
-      }
-    } else {
-      // Turnstile not loaded yet, try again in 200ms
-      setTimeout(initTurnstile, 200);
-    }
-  };
+//   // Wait for turnstile to be ready
+//   const initTurnstile = () => {
+//     if (window.turnstile) {
+//       if (turnstileWidgetId !== null) {
+//         turnstile.reset(turnstileWidgetId);
+//       } else {
+//         turnstileWidgetId = turnstile.render('#pdf-turnstile-container', {
+//           sitekey: '0x4AAAAAAC02SPNUmLlPZdUS',
+//           theme: 'light',
+//           callback: function (token) {
+//             // inline callback — no string, no timing issue
+//             cfToken = token;
+//             dlBtn.disabled = false;
+//             dlBtn.setAttribute('aria-disabled', 'false');
+//           },
+//           'expired-callback': function () {
+//             cfToken = null;
+//             dlBtn.disabled = true;
+//             dlBtn.setAttribute('aria-disabled', 'true');
+//           }
+//         });
+//       }
+//     } else {
+//       // Turnstile not loaded yet, try again in 200ms
+//       setTimeout(initTurnstile, 200);
+//     }
+//   };
 
-  initTurnstile();
-}
+//   initTurnstile();
+// }
 
 // Close button
-document.getElementById('download-close').addEventListener('click', () => {
-  pdfOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-});
+// document.getElementById('download-close').addEventListener('click', () => {
+//   pdfOverlay.classList.remove('open');
+//   document.body.style.overflow = '';
+// });
 
 
 // pdfOverlay.addEventListener('click', (e) => {
@@ -376,76 +376,76 @@ document.getElementById('download-close').addEventListener('click', () => {
 // });
 
 // Download button
-dlBtn.addEventListener('click', async () => {
-  if (!cfToken) return;
+// dlBtn.addEventListener('click', async () => {
+//   if (!cfToken) return;
 
-  dlBtn.disabled = true;
-  btn_download_txt.textContent = 'Verifying...';
-  downloadIcon.hidden = true;
+//   dlBtn.disabled = true;
+//   btn_download_txt.textContent = 'Verifying...';
+//   downloadIcon.hidden = true;
 
-  try {
-    const response = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: cfToken })
-    });
+//   try {
+//     const response = await fetch(WORKER_URL, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({ token: cfToken })
+//     });
 
-    if (!response.ok) throw new Error('Failed');
+//     if (!response.ok) throw new Error('Failed');
 
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
+//     const blob = await response.blob();
+//     const blobUrl = URL.createObjectURL(blob);
 
-    // if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
-    //   window.open(blobUrl, '_blank');
-    // } else {
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = 'EGA_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    // }
+//     // if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
+//     //   window.open(blobUrl, '_blank');
+//     // } else {
+//     const link = document.createElement('a');
+//     link.href = blobUrl;
+//     link.download = 'EGA_Prospectus_' + new Date().toISOString().slice(0, 10) + '.pdf';
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+//     // }
 
-    URL.revokeObjectURL(blobUrl);
-    successMsg.style.display = 'block';
+//     URL.revokeObjectURL(blobUrl);
+//     successMsg.style.display = 'block';
 
-    // fetch('https://ega2.bharatyudhishthir-509.workers.dev/log-download', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     device_type: getDeviceType(),
-    //     timestamp: getLocalTimestamp()
-    //   })
-    // }).catch(() => { });
+//     // fetch('https://egam.bharatyudhishthir-509.workers.dev/log-download', {
+//     //   method: 'POST',
+//     //   headers: { 'Content-Type': 'application/json' },
+//     //   body: JSON.stringify({
+//     //     device_type: getDeviceType(),
+//     //     timestamp: getLocalTimestamp()
+//     //   })
+//     // }).catch(() => { });
 
-    await fetch('https://ega2.bharatyudhishthir-509.workers.dev/log-download', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Secret-Token': SECRET
-      },
-      body: JSON.stringify({
-        visitor_id: visitorId,
-        time_spent: getTimeSpent()
-      })
-    }).catch(() => { });
-    //autoclose
-    setTimeout(() => {
-      pdfOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }, 7000);
+//     await fetch('https://egam.bharatyudhishthir-509.workers.dev/log-download', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'X-Secret-Token': SECRET
+//       },
+//       body: JSON.stringify({
+//         visitor_id: visitorId,
+//         time_spent: getTimeSpent()
+//       })
+//     }).catch(() => { });
+//     //autoclose
+//     setTimeout(() => {
+//       pdfOverlay.classList.remove('open');
+//       document.body.style.overflow = '';
+//     }, 7000);
 
-  } catch (err) {
-    alert('Something went wrong. Please try again.');
-  } finally {
-    btn_download_txt.textContent = 'Download';
-    downloadIcon.hidden = false;
-    if (!successMsg.style.display || successMsg.style.display === 'none') {
-      dlBtn.disabled = false;
-      dlBtn.setAttribute('aria-disabled', 'false');
-    }
-  }
-});
+//   } catch (err) {
+//     alert('Something went wrong. Please try again.');
+//   } finally {
+//     btn_download_txt.textContent = 'Download';
+//     downloadIcon.hidden = false;
+//     if (!successMsg.style.display || successMsg.style.display === 'none') {
+//       dlBtn.disabled = false;
+//       dlBtn.setAttribute('aria-disabled', 'false');
+//     }
+//   }
+// });
 
 document.getElementById('s-phone').addEventListener('input', (e) => {
   let val = e.target.value.replace(/\D/g, ""); // Digits only
@@ -478,56 +478,56 @@ function checkFooterVisibility() {
 window.addEventListener('scroll', checkFooterVisibility);
 
 /*Festivals Popup*/
-const popup = document.getElementById("posterPopup");
+// const popup = document.getElementById("posterPopup");
 
-function openPopup() {
-  popup.style.display = "block";
-  popup.classList.remove("show");
-  void popup.offsetWidth;
-  popup.classList.add("show");
+// function openPopup() {
+//   popup.style.display = "block";
+//   popup.classList.remove("show");
+//   void popup.offsetWidth;
+//   popup.classList.add("show");
 
-  popup.autoCloseTimer = setTimeout(closePopup, 6000);
-}
+//   popup.autoCloseTimer = setTimeout(closePopup, 6000);
+// }
 
-function closePopup() {
-  popup.classList.remove("show");
-  popup.classList.add("hide");
+// function closePopup() {
+//   popup.classList.remove("show");
+//   popup.classList.add("hide");
 
-  clearTimeout(popup.autoCloseTimer);
+//   clearTimeout(popup.autoCloseTimer);
 
-  setTimeout(() => {
-    popup.style.display = "none";
-    popup.classList.remove("hide");
-  }, 300);
-}
+//   setTimeout(() => {
+//     popup.style.display = "none";
+//     popup.classList.remove("hide");
+//   }, 300);
+// }
 
-window.closePopup = closePopup;
+// window.closePopup = closePopup;
 
-popup.addEventListener("click", function (e) {
-  if (e.target === popup) closePopup();
-});
+// popup.addEventListener("click", function (e) {
+//   if (e.target === popup) closePopup();
+// });
 
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") closePopup();
-});
+// document.addEventListener("keydown", function (e) {
+//   if (e.key === "Escape") closePopup();
+// });
 
-fetch("files/festivals.json")
-  .then(response => response.json())
-  .then(data => {
-    let today = new Date();
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
+// fetch("files/festivals.json")
+//   .then(response => response.json())
+//   .then(data => {
+//     let today = new Date();
+//     let day = today.getDate();
+//     let month = today.getMonth() + 1;
 
-    const festival = data.find(f =>
-      Number(f.day) === day && Number(f.month) === month
-    );
+//     const festival = data.find(f =>
+//       Number(f.day) === day && Number(f.month) === month
+//     );
 
-    if (festival) {
-      document.getElementById("festivalImage").src = festival.image;
-      document.getElementById("festive-header").textContent = festival.header;
-      document.getElementById("festive-desc").textContent = festival.desc;
+//     if (festival) {
+//       document.getElementById("festivalImage").src = festival.image;
+//       document.getElementById("festive-header").textContent = festival.header;
+//       document.getElementById("festive-desc").textContent = festival.desc;
 
-      openPopup();
-    }
-  })
-  .catch(err => console.error("Error loading festivals:", err));
+//       openPopup();
+//     }
+//   })
+//   .catch(err => console.error("Error loading festivals:", err));
