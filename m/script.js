@@ -2,7 +2,7 @@ const card = document.getElementById('survey-card');
 const tab = document.getElementById('survey-tab');
 let shown = false;
 let visitorId = null;
-const SECRET = 'okWErijfiger83582900=%AAA';
+const SECRET = '';
 const pageLoadTime = Date.now();
 
 function getDeviceType() {
