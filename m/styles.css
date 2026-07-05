@@ -232,8 +232,9 @@ img {
   cursor: pointer;
   border-radius: 100%;
   margin: 0 auto;
-  width: 24px;
-  height: 24px;
+  width: 29px;
+  height: 29px;
+  text-align: center;
   background: #f0f4f7;
   color: #cc0404c0;
 }
