@@ -277,16 +277,15 @@ function resetCard() {
             </div>
         </div>
         <div id="stage-2" class="hidden survey-card">
-            <h3>Great! Tell us about Yourself</h3>
             <input type="text" id="s-name" placeholder="Your Name" autocapitalize="words" autocomplete="name"
                 autocorrect="off" />
-            <input type="text" id="i-name" placeholder="Your School/College name" autocapitalize="words" />
-            <input type="text" id="c-name" placeholder="Interested Subject/Course" autocapitalize="words" />
+            <input type="text" id="i-name" placeholder="Company Name" autocapitalize="words" />
+            <input type="text" id="c-name" placeholder="Services Interested In" autocapitalize="words" />
             <div class="phone-input-tab">
                 <span id="country-code">+91</span>
                 <input type="tel" id="s-phone" placeholder="Phone Number" autocomplete="tel" />
             </div>
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAACuyOXqycnJ5LVcZ"></div>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAADwEj5fheulAht2j"></div>
             <button id="survey-submit">Get Callback →</button>
         </div>
         <div id="stage-3" class="hidden">
